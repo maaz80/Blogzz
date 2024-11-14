@@ -62,19 +62,19 @@ function Header() {
 
           {/* Navigation Links */}
           <ul
-            className={`flex-col md:flex-row md:flex ml-auto items-center transition-all duration-300 ease-in-out ${
-              isMenuOpen ? 'flex' : 'hidden md:flex'
+            className={`flex-col right-0 top-[60px] shadow-md shadow-gray-400 md:shadow-none text-rose-800 md:text-white rounded-md bg-white md:bg-transparent absolute md:static md:flex-row md:flex  items-center transition-all duration-1300 ease-in-out ${
+              isMenuOpen ? 'flex ' : 'hidden md:flex'
             }`}
           >
             {navItems.map((item) =>
               item.active ? (
-                <li key={item.name} className="mt-2 md:mt-0">
+                <li key={item.name} className="mt-0  w-full">
                   <button
                     onClick={() => {
                       navigate(item.slug);
-                      setIsMenuOpen(false); // Close menu on navigation
+                      setIsMenuOpen(false);
                     }}
-                    className="inline-block px-6 py-2 duration-200 hover:bg-rose-600 rounded-full"
+                    className="inline-block w-[100%] md:w-32 px-6 py-2 duration-800 hover:bg-rose-200 md:hover:bg-rose-600 rounded-none md:rounded-full border-b md:border-none"
                   >
                     {item.name}
                   </button>
@@ -82,7 +82,7 @@ function Header() {
               ) : null
             )}
             {authStatus && (
-              <li className="mt-2 md:mt-0">
+              <li className="mt-0 w-full">
                 <LogoutBtn />
               </li>
             )}
