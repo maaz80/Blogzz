@@ -5,19 +5,53 @@ import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 
-export default function Post() {
+function Post() {
     const [post, setPost] = useState(null);
+    const [isAuthor, setIsAuthor] = useState(false)
     const { slug } = useParams();
     const navigate = useNavigate();
-
     const userData = useSelector((state) => state.auth.userData);
 
-    const isAuthor = post && userData ? post.userId === userData.$id : false;
+    useEffect(() => {
+        if (post && userData) {
+            console.log(userData.labels);
+            console.log(post);
+            if (userData.labels && userData.labels.includes('admin')) {
+                setIsAuthor(true)
+                return
+            }
+
+            const permissionString = post.$permissions.find(permission => permission.includes('user:'));
+
+            if (permissionString) {
+                const match = permissionString.match(/user:([a-zA-Z0-9\-]+)/);
+
+                if (match) {
+                    const postUserId = match[1]; // Extracted user ID
+                    setIsAuthor(postUserId === userData.$id);
+                    console.log(postUserId, userData.$id);
+
+                } else {
+                    setIsAuthor(false);
+                }
+            } else {
+                setIsAuthor(false);
+            }
+        } else {
+            setIsAuthor(false);
+        }
+    }, [post, userData, navigate, slug]);
+
+
+
 
     useEffect(() => {
         if (slug) {
             appwriteService.GetPost(slug).then((post) => {
-                if (post) setPost(post);
+                if (post) {
+                    setPost(post);
+                    console.log('Hey there')
+                }
                 else navigate("/");
             });
         } else navigate("/");
@@ -60,8 +94,9 @@ export default function Post() {
                 </div>
                 <div className="browser-css">
                     {parse(post.content)}
-                    </div>
+                </div>
             </Container>
         </div>
     ) : null;
 }
+export default Post;

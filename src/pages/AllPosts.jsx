@@ -8,8 +8,7 @@ function AllPosts() {
     useEffect(() => {
         appwriteService.GetPosts().then((posts) => {
             if (posts) {
-                console.log(posts);
-                
+                console.log(posts); 
                 setPosts(posts.documents);
             }
         });
@@ -22,7 +21,7 @@ function AllPosts() {
                 <div className="flex flex-wrap justify-start gap-6 w-[100%]">
                     {posts.length > 0 ? (
                         posts.map((post) => (
-                            <div key={post.$id} className=" ">
+                            <div key={post.$id}>
                                 <PostCard {...post} />
                             </div>
                         ))

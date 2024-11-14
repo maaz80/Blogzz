@@ -38,13 +38,14 @@ export class AuthService {
 
     async getCurrentUser() {
         try {
-            return await this.account.getPrefs();
+            const user = await this.account.get();  // Use get() to retrieve full user details
+            return user;
         } catch (error) {
-            console.log("Appwrite serive :: getCurrentUser :: error", error);
+            console.log("Appwrite service :: getCurrentUser :: error", error);
+            return null;
         }
-
-        return null;
     }
+    
 
     async logout() {
 

@@ -22,26 +22,31 @@ export class Service {
 
    
 
-    async CreatePost({ title,slug, content, featuredimage, status, userid }) {
+    async CreatePost({ title, slug, content, featuredimage, status, userid }) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                slug, 
+                ID.unique(),
                 {
                     title,
                     content,
                     featuredimage,
                     status,
                     userid
-                }
-            )
+                },
+                [
+                    Permission.read(Role.user(userid)),
+                    Permission.update(Role.user(userid)),
+                    Permission.delete(Role.user(userid))
+                ]
+            );
         } catch (error) {
             console.log('Create post' + error);
-            console.log("userid:", userid); // Verify if this logs the correct userid
-
+            console.log("userid:", userid);
         }
     }
+    
 
     async UpdatePost(slug, { title, content, featuredimage, status }) {
         try {
