@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import Logo from '../Logo'
 
 function Footer() {
-  return (
-    <section className="relative overflow-hidden py-10 bg-rose-800 text-white rounded-t-md">
-            <div className="relative z-10 mx-auto max-w-7xl px-4">
+    return (
+        <section className=" overflow-hidden py-10 bg-rose-800 text-white rounded-t-md mt-4 w-[100%]">
+            <div className="  mx-auto max-w-7xl px-4">
                 <div className="-m-6 flex flex-wrap">
                     <div className="w-full p-6 md:w-1/2 lg:w-5/12">
                         <div className="flex h-full flex-col justify-between">
@@ -137,7 +137,7 @@ function Footer() {
                 </div>
             </div>
         </section>
-  )
+    )
 }
 
 export default Footer

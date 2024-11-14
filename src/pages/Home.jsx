@@ -18,9 +18,9 @@ function Home() {
             <div className="w-full py-8 mt-4 text-center">
                 <Container>
                     <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
+                        <div className="p-2 w-full h-screen mt-[10%]">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
-                                Loading...
+                               Start adding Posts ;)
                             </h1>
                         </div>
                     </div>
@@ -29,12 +29,12 @@ function Home() {
         )
     }
     return (
-        <div className='w-full py-4'>
+        <div className='w-full py-4 '>
             <h1 className='font-semibold text-5xl text-rose-400  pb-3'>Home</h1>
             <Container>
-                <div className='flex flex-wrap'>
+                <div className='flex flex-wrap w-[100%] gap-3 '>
                     {posts.map((post) => (
-                        <div key={post.$id} className='p-2 '>
+                        <div key={post.$id} className='p-0 md:p-2 '>
                             <PostCard {...post} />
                         </div>
                     ))}

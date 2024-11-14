@@ -8,13 +8,15 @@ function AllPosts() {
     useEffect(() => {
         appwriteService.GetPosts().then((posts) => {
             if (posts) {
+                console.log(posts);
+                
                 setPosts(posts.documents);
             }
         });
     }, []);
 
     return (
-        <div className="w-full min-h-screen  ">
+        <div className="w-full   ">
           <h1 className='font-semibold text-5xl text-rose-400 pb-5 -pt-10 mt-5'>Posts</h1>
             <Container>
                 <div className="flex flex-wrap justify-start gap-6 w-[100%]">

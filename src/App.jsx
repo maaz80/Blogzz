@@ -25,11 +25,11 @@ function App() {
     <div className='min-h-screen flex flex-wrap content-between bg-rose-100 poppins-regular'>
       <div className='w-full block'>
         <Header />
-        <main className='h-screen px-4'>
+        <main className=' px-0 md:px-4'>
           <Outlet />
         </main>
-        <Footer />
       </div>
+        <Footer />
     </div>
   ) : null
 }
