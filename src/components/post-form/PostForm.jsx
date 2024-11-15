@@ -1,36 +1,52 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import authService from "../../appwrite/auth";
 
 export default function PostForm({ post }) {
+    const [currentUserData, setCurrentUserData] = useState('')
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || "",
             slug: post?.$id || "",
             content: post?.content || "",
             status: post?.status || "active",
-            userid: post?.userid || "",  
-
+            userid: post?.userid || "",
+            UserName: currentUserData || 'Unknown'
         },
     });
-
+    
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
 
- 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const currentUser = await authService.getCurrentUser();
+            if (currentUser) {
+                setCurrentUserData(currentUser.name);
+                
+            } else {
+                console.log('User Not Found');
+            }
+        };
+        fetchUserData();
+    }, [post,navigate]);
+
+    useEffect(() => {
+        if (currentUserData) {
+            setValue('UserName',currentUserData);
+        }
+    }, [currentUserData, setValue]);
+
     const submit = async (data) => {
-        // Log data for debugging
         console.log(data);
 
-        // Ensure userid is set
         if (!data.userid) {
-            // If no user is logged in, use a random ID (temporary fallback)
             data.userid = `user-${Math.floor(Math.random() * 1000000)}`;
         } else {
-            // Ensure the user ID is coming from the authenticated user
             data.userid = userData?.$id || data.userid;
         }
 

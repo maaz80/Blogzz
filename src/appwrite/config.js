@@ -22,7 +22,7 @@ export class Service {
 
    
 
-    async CreatePost({ title, slug, content, featuredimage, status, userid }) {
+    async CreatePost({ title, content, featuredimage, status, userid ,UserName }) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -33,13 +33,10 @@ export class Service {
                     content,
                     featuredimage,
                     status,
-                    userid
+                    userid,
+                    UserName
                 },
-                [
-                    Permission.read(Role.user(userid)),
-                    Permission.update(Role.user(userid)),
-                    Permission.delete(Role.user(userid))
-                ]
+                
             );
         } catch (error) {
             console.log('Create post' + error);
