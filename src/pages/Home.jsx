@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from '../components'
-import conf from '../conf/conf';
 
 function Home() {
     const [posts, setPosts] = useState([])
@@ -13,25 +12,7 @@ function Home() {
             }
         })
     }, [])
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch(`${conf.appwriteUrl}/functions/${conf.functionId}/executions`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Appwrite-Project": `${conf.appwriteProjectId}`,
-                    "X-Appwrite-Key": `${conf.appwriteusersapikey}`
-                },
-            });
-    
-            const result = await response.json();
-            const users = JSON.parse(result.responseBody).users; // Parse response to get users
-            console.log("All Users:", users);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-        }
-    };
-    fetchUsers();
+
     if (posts.length === 0) {
         return (
             <div className="w-full py-8 mt-4 text-center">

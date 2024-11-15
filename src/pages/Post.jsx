@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
-import authService from "../appwrite/auth"
+import authService from "../appwrite/auth";
 
 
 function Post() {
