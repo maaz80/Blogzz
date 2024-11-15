@@ -1,0 +1,8 @@
+{
+    "name": "fetch-users",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "node-appwrite": "^8.2.0"
+    }
+}

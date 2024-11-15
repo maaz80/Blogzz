@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, PostCard } from '../components';
 import appwriteService from "../appwrite/config";
+import authService from '../appwrite/auth';
 
 function AllPosts() {
     const [posts, setPosts] = useState([]);
@@ -13,7 +14,16 @@ function AllPosts() {
             }
         });
     }, []);
-
+    const fetchUsers = async () => {
+        try {
+            const usersArray = await authService.fetchAllUsers();
+            console.log(usersArray);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    };
+    
+    fetchUsers();
     return (
         <div className="w-full   ">
           <h1 className='font-semibold text-5xl text-rose-400 pb-5 -pt-10 mt-5'>Posts</h1>
