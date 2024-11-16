@@ -8,7 +8,10 @@ function Home() {
     useEffect(() => {
         appwriteService.GetPosts().then((posts) => {
             if (posts) {
-                setPosts(posts.documents)
+                const sortedPosts = posts.documents.sort((a, b) => {
+                    return new Date(b.$createdAt) - new Date(a.$createdAt)
+                })
+                setPosts(sortedPosts)
             }
         })
     }, [])
@@ -20,7 +23,7 @@ function Home() {
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full h-screen mt-[10%]">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
-                               Start adding Posts ;)
+                                Start adding Posts ;)
                             </h1>
                         </div>
                     </div>

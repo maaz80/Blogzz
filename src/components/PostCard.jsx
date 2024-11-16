@@ -7,7 +7,7 @@ function PostCard({ $id, title, featuredimage, $createdAt ,UserName}) {
   const createdDate = $createdAt.slice(0, 10)
   return (
     <Link to={`/post/${$id}`}>
-      <div className='w-[100vw] md:w-[345px] m-auto md:m-0 bg-rose-300 rounded-xl p-2 h-80 shadow-md shadow-gray-400'>
+      <div className='w-[100vw] md:w-[345px] m-auto md:m-0  rounded-xl p-2 h-80 shadow-md shadow-gray-400'>
         <div className='w-full justify-center mb-4'>
           <img src={appwriteService.getFilePreview(featuredimage)} alt={title}
             className='rounded-xl h-52 w-[100%] object-cover' />

@@ -5,6 +5,7 @@ import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import authService from "../../appwrite/auth";
+import Popup from "../Popup";
 
 export default function PostForm({ post }) {
     const [currentUserData, setCurrentUserData] = useState('')
@@ -18,7 +19,7 @@ export default function PostForm({ post }) {
             UserName: currentUserData || 'Unknown'
         },
     });
-    
+    const [isPopup, setIsPopup] = useState(false)
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
 
@@ -72,10 +73,14 @@ export default function PostForm({ post }) {
                 const fileId = file.$id;
                 data.featuredimage = fileId;
                 const dbPost = await appwriteService.CreatePost({ ...data, userid: data.userid });
-
-                if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`);
-                }
+                setIsPopup(true)
+                setTimeout(() => {
+                    setIsPopup(false)
+                    if (dbPost) {
+                        navigate(`/post/${dbPost.$id}`);
+                    }
+                    
+                }, 1000);
             }
         }
     };
@@ -149,6 +154,7 @@ export default function PostForm({ post }) {
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>
+            {isPopup && <Popup children={'Post Updated Successfull!!'}/>}
         </form>
     );
 }

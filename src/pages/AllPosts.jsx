@@ -9,7 +9,11 @@ function AllPosts() {
         appwriteService.GetPosts().then((posts) => {
             if (posts) {
                 console.log(posts); 
-                setPosts(posts.documents);
+                const sortedPosts = posts.documents.sort((a,b)=>{
+                    
+                    return new Date(b.$createdAt) - new Date(a.$createdAt)
+                })
+                setPosts(sortedPosts);
             }
         });
     }, []);

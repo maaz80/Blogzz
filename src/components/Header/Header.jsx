@@ -3,9 +3,11 @@ import { Container, Logo, LogoutBtn } from '../index';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { HiMenu, HiX } from 'react-icons/hi';
+import Popup from '../Popup';
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const [isPopup, setIsPopup] = useState(false)
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -88,6 +90,8 @@ function Header() {
             )}
           </ul>
         </nav>
+        {isPopup && <Popup children={'Logout Succesfull!!!'} />}
+
       </Container>
     </header>
   );
