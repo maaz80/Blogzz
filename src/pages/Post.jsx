@@ -94,9 +94,9 @@ function Post() {
     };
 
     return post && userData ? (
-        <div className="py-8 mx-2 md:mx-0  h-screen">
+        <div className="py-8 mx-2 md:mx-0  min-h-screen">
             <div className="flex flex-col md:flex-row items-start ">
-                <div className="w-[100%] md:w-[60%] flex bg-white justify-center mb-4 relative  rounded-xl  h-60 md:h-[600px] mx-0 md:-mx-2">
+                <div className="w-[100%] md:w-[60%] flex bg-white justify-center mb-4 relative  rounded-xl  h-60 md:h-[600px] mx-0 md:mx-2">
                     <img
                         src={appwriteService.getFilePreview(post.featuredimage)}
                         alt={post.title}

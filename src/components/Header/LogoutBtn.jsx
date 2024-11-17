@@ -5,7 +5,7 @@ import { logout } from '../../store/authSlice'
 import Popup from '../Popup'
 import { useNavigate } from 'react-router-dom'
 
-const LogoutBtn = () => {
+const LogoutBtn = ({classes}) => {
     const [isPopup, setIsPopup] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -23,7 +23,7 @@ const LogoutBtn = () => {
     return (<>
         {isPopup && <Popup children={'Logout Succesfull!!!'} />}
 
-        <button className='inline-bock px-6 py-2 duration-200 hover:bg-rose-200 md:hover:bg-rose-600 rounded-b-md md:rounded-full w-full ' onClick={logoutHandler}>Logout</button>
+        <button className={`inline-bock px-7 py-2 duration-200 hover:bg-rose-200 md:hover:bg-rose-600/20 rounded-b-md md:rounded-full w-full ${classes}`}  onClick={logoutHandler}>Logout</button>
         </>
     )
 }

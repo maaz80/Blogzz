@@ -31,8 +31,8 @@ function Signup() {
             <div className={`mx-auto w-full max-w-md bg-white backdrop-blur-lg rounded-xl p-10 border border-gray-200 shadow-xl`}>
                 <div className="mb-2 flex justify-center">
                 </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
+                <h2 className="text-center text-2xl font-bold leading-tight mb-5 ">Sign up to create account</h2>
+                <p className="mt-2 text-center text-base text-black/60 mb-6">
                     Already have an account?&nbsp;
                     <Link
                         to="/login"

@@ -16,27 +16,7 @@ function Header() {
       name: 'Home',
       slug: "/",
       active: true,
-    },
-    {
-      name: "Login",
-      slug: "/login",
-      active: !authStatus,
-    },
-    {
-      name: "Signup",
-      slug: "/signup",
-      active: !authStatus,
-    },
-    {
-      name: "All Posts",
-      slug: "/all-posts",
-      active: authStatus,
-    },
-    {
-      name: "Add Post",
-      slug: "/add-post",
-      active: authStatus,
-    },
+    }
   ];
 
   const handleMenuToggle = () => {
@@ -44,27 +24,23 @@ function Header() {
   };
 
   return (
-    <header className="py-3 px-4 shadow bg-rose-800 rounded-b-md text-white z-50">
+    <header className="py-3 px-4 shadow bg-rose-800/10 rounded-b-md text-gray-600 z-50 -ml-10">
       <Container>
         <nav className="flex items-center justify-between">
-          {/* Logo Section */}
-          <div className="mr-4">
-            <Link to="/">
-              <Logo />
-            </Link>
-          </div>
+          {/* Section */}
+          <div></div>
 
           {/* Hamburger Icon for Mobile */}
           <button 
             onClick={handleMenuToggle}
-            className="text-white text-2xl md:hidden focus:outline-none"
+            className="text-gray-600 text-2xl md:hidden focus:outline-none"
           >
             {isMenuOpen ? <HiX /> : <HiMenu />}
           </button>
 
           {/* Navigation Links */}
           <ul
-            className={`flex-col z-50 right-0 top-[60px] shadow-md shadow-gray-400 md:shadow-none text-rose-800 md:text-white rounded-md bg-white md:bg-transparent absolute md:static md:flex-row md:flex  items-center transition-all duration-1300 ease-in-out ${
+            className={`flex-col z-50 right-0 top-[60px] shadow-md shadow-gray-400 md:shadow-none text-rose-800 md:text-gray-600 rounded-md bg-white md:bg-transparent absolute md:static md:flex-row md:flex  items-center transition-all duration-1300 ease-in-out ${
               isMenuOpen ? 'flex ' : 'hidden md:flex'
             }`}
           >
@@ -76,7 +52,7 @@ function Header() {
                       navigate(item.slug);
                       setIsMenuOpen(false);
                     }}
-                    className="inline-block w-[100%] md:w-32 px-6 py-2 duration-800 hover:bg-rose-200 md:hover:bg-rose-600 rounded-none md:rounded-full border-b md:border-none"
+                    className="inline-block w-[100%] md:w-32 px-6 py-2 duration-800 hover:bg-rose-200 md:hover:bg-rose-600/20 rounded-none md:rounded-full border-b md:border-none"
                   >
                     {item.name}
                   </button>

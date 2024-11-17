@@ -12,6 +12,7 @@ import Signup from './pages/Signup'
 import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 import AllPosts from "./pages/AllPosts";
+import Dashboard from './components/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
         {
             path: "/post/:slug",
             element: <Post />,
+        },
+        {
+            path: "/dashboard",
+            element: <Dashboard />,
         },
     ],
 },
