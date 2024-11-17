@@ -28,7 +28,7 @@ function Header() {
       <Container>
         <nav className="flex items-center justify-between">
           {/* Section */}
-          <div></div>
+          <div><Logo textColor="text-gray-600 bloack md:hidden ml-4 md:ml-0" /></div>
 
           {/* Hamburger Icon for Mobile */}
           <button 

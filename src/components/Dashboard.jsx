@@ -7,12 +7,17 @@ import ActiveUsers from './images/ActiveUsers.png'
 import Comments from './images/Comments.png'
 import { Link } from 'react-router-dom';
 import AddPost from '../pages/AddPost';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
     const [posts, setPosts] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
+    const [postCounts, setPostCounts] = useState({ labels: [], data: [] });
 
     useEffect(() => {
         // Fetch all posts
@@ -29,10 +34,22 @@ const Dashboard = () => {
 
                 setPosts(uniquePosts); // Set only unique posts
 
+                // Reversing post for showing recent posts 
                 const reversePost = allposts.documents
-                .slice()
-                .sort((a,b)=>  new Date(b.$createdAt) - new Date(a.$createdAt))
-                setAllPosts(reversePost); // Store all posts
+                    .slice()
+                    .sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
+                setAllPosts(reversePost); 
+
+                // Data for the graph
+                const postDates = reversePost.map(post => new Date(post.$createdAt).toLocaleDateString());
+                const uniqueDates = [...new Set(postDates)]; // Get unique dates
+
+                const counts = uniqueDates.map(date => postDates.filter(d => d === date).length);
+
+                setPostCounts({
+                    labels: uniqueDates,
+                    data: counts
+                });
             }
         });
     }, []);
@@ -56,13 +73,14 @@ const Dashboard = () => {
             }
         });
     }, [allPosts]);
-
+    
     return (
-        <div className='min-h-screen p-2 md:p-10 '>
-            <h1 className='text-gray-600 text-3xl font-semibold ml-0 md:-ml-4 mt-0 md:-mt-5 mb-10'>Welcome Back! 👋</h1>
-            <div className="flex flex-wrap justify-around gap-16 md:gap-0">
+        <div className='min-h-screen p-2 xl:p-10 '>
+            <h1 className='text-gray-600 text-3xl font-semibold ml-0 xl:-ml-4 mt-0 xl:-mt-5 mb-10'>Welcome Back! 👋</h1>
+            <div className="flex flex-wrap justify-around gap-16 xl:gap-0">
 
-                <div className="relative w-[99%] md:w-80 h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4">
+                {/* Admin Info  */}
+                <div className="relative w-[99%] xl:w-80 h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4">
                     {/* Admin Information */}
                     <div className="text-xl font-semibold text-gray-700">{currentUser}</div>
                     <div className="text-sm font-medium text-gray-500">Owner/Admin</div>
@@ -81,7 +99,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* For Total Posts  */}
-                <div className="w-[99%] md:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 hover:shadow-xl transition-shadow duration-300">
+                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 hover:shadow-xl transition-shadow duration-300">
                     {/* Image */}
                     <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 w-40 h-32">
                         <img src={PostsImage} alt="Posts" className="w-full h-full object-contain " />
@@ -94,7 +112,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* For Active Users  */}
-                <div className="w-[99%] md:w-56 h-56 relative rounded-lg shadow-xl bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center">
+                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300">
                     <div className="absolute -top-24 w-48 h-48">
                         <img src={ActiveUsers} alt="Active Users" className="w-full h-full object-contain" />
                     </div>
@@ -105,7 +123,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* For Total Comments  */}
-                <div className="w-[99%] md:w-56 h-56 relative rounded-lg shadow-xl bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center">
+                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300">
                     <div className="absolute -top-20 w-32 h-40">
                         <img src={Comments} alt="Total Comments" className="w-full h-full object-contain" />
                     </div>
@@ -114,74 +132,104 @@ const Dashboard = () => {
                         <div className="text-sm font-medium text-gray-600">Total Comments</div>
                     </div>
                 </div>
-                <div className="w-[99%] md:w-[56%] h-72 relative rounded-lg shadow-xl bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center mt-0 md:mt-10"></div>
 
-                <div className="w-[99%] md:w-[35%] h-72 overflow-y-scroll relative rounded-lg shadow-xl bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-2 md:p-6 mt-0 md:mt-10">
-    {/* Header Section */}
-    <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm">
-        <h2 className="text-lg font-bold text-gray-700">Recent Blogs</h2>
-        <Link
-            to="/add-post"
-            element={<AddPost />}
-            className="text-blue-500 hover:text-blue-600 font-medium underline"
-        >
-            Add Post
-        </Link>
-    </div>
+                {/* Latest Posts  */}
+                <div className="w-[99%] xl:w-[35%] h-72 overflow-y-scroll relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-2 xl:p-6 mt-0 xl:mt-10 hover:shadow-xl transition-shadow duration-300">
+                    {/* Header Section */}
+                    <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm">
+                        <h2 className="text-lg font-bold text-gray-700">Recent Blogs</h2>
+                        <Link
+                            to="/add-post"
+                            element={<AddPost />}
+                            className="text-blue-500 hover:text-blue-600 font-medium underline"
+                        >
+                            Add Post
+                        </Link>
+                    </div>
 
-    {/* Posts Section */}
-    <div className="mt-1 space-y-1">
-        {allPosts.length > 0 ? (
-            allPosts.slice(0, 5).map((post) => (
-                <div
-                    key={post.$id}
-                    className="flex items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow"
-                >
-                    {/* Post Image */}
-                    <img
-                        src={appwriteService.getFilePreview(post.featuredimage)|| 'https://via.placeholder.com/50'}
-                        alt={post.title}
-                        className="w-12 h-12 rounded-md object-cover"
-                    />
-                    {/* Post Details */}
-                    <div>
-                        <h3 className="text-sm font-semibold text-gray-800">
-                            {post.title}
-                        </h3>
-                        <p className="text-xs text-gray-500">By {post.UserName}</p>
+                    {/* Posts Section */}
+                    <div className="mt-1 space-y-1">
+                        {allPosts.length > 0 ? (
+                            allPosts.slice(0, 5).map((post) => (
+                                <div
+                                    key={post.$id}
+                                    className="flex items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow"
+                                >
+                                    {/* Post Image */}
+                                    <img
+                                        src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
+                                        alt={post.title}
+                                        className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    {/* Post Details */}
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-gray-800">
+                                            {post.title}
+                                        </h3>
+                                        <p className="text-xs text-gray-500">By {post.UserName}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center text-gray-500">No Posts Yet</div>
+                        )}
                     </div>
                 </div>
-            ))
-        ) : (
-            <div className="text-center text-gray-500">No Posts Yet</div>
-        )}
-    </div>
-</div>
 
+                {/* Graph - Posts per Day */}
+                <div className="w-[99%] xl:w-[56%] h-auto xl:h-72 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-1 xl:p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300 mt-0 xl:mt-10">
+                    <h2 className="text-xl font-semibold text-gray-700 mb-4">Posts Per Day</h2>
+                    <div className="w-full h-[200px] xl:h-[300px]">
+                        <Line
+                            data={{
+                                labels: postCounts.labels,
+                                datasets: [
+                                    {
+                                        label: 'Posts Per Day',
+                                        data: postCounts.data,
+                                        borderColor: '#4c6ef5',
+                                        backgroundColor: 'rgba(76, 110, 245, 0.2)',
+                                        tension: 0.4,
+                                        fill: true,
+                                    },
+                                ],
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false, // Makes the chart take available height
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false,
+                                    },
+                                },
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Date',
+                                        },
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Post Count',
+                                        },
+                                        min: 0,
+                                        ticks: {
+                                            stepSize: 1,
+                                        },
+                                    },
+                                },
+                            }}
+                        />
+                    </div>
+                </div>
 
             </div>
-
-            {/* <h2>All Unique Posts</h2>
-            <div>
-                {posts.length > 0 ? (
-                    posts.map((post) => (
-                        <div key={post.$id}>{post.UserName}</div>
-                    ))
-                ) : (
-                    <div>No unique posts</div>
-                )}
-            </div>
-
-            <h2>Posts Matching Current User</h2>
-            <div>
-                {userPosts.length > 0 ? (
-                    userPosts.map((post) => (
-                        <div key={post.$id}>{post.UserName}</div>
-                    ))
-                ) : (
-                    <div>No posts for the current user</div>
-                )}
-            </div> */}
         </div>
     );
 };
