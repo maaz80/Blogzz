@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Logo, LogoutBtn } from '../index';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { HiMenu, HiX } from 'react-icons/hi';
 import Popup from '../Popup';
+import authService from '../../appwrite/auth';
+import ProfileImage from '../images/Unknown.jpg'
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const [isPopup, setIsPopup] = useState(false)
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [username, setUsername] = useState('Unknown')
 
   const navItems = [
     {
@@ -23,11 +26,21 @@ function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Finding User 
+const userData=()=>{
+  authService.getCurrentUser().then((userData)=>{
+    if(userData){
+      setUsername(userData.name)
+    }
+  })
+
+}
+userData()
+
   return (
-    <header className="py-3 px-4 shadow bg-rose-800/10 rounded-b-md text-gray-600 z-50 -ml-10">
+    <header className="py-2 w-full px-4 shadow bg-rose-800/10 rounded-b-md text-gray-600 z-50 ">
       <Container>
         <nav className="flex items-center justify-between">
-          {/* Section */}
           <div><Logo textColor="text-gray-600 bloack md:hidden ml-4 md:ml-0" /></div>
 
           {/* Hamburger Icon for Mobile */}
@@ -60,10 +73,14 @@ function Header() {
               ) : null
             )}
             {authStatus && (
-              <li className="mt-0 w-full">
+              <li className="mt-0 w-full mr-8">
                 <LogoutBtn />
               </li>
             )}
+            <div className='w-full flex items-center gap-3 justify-center'>
+              <div className='text-gray-600 font-semibold w-40'>{username}</div>
+              <img src={ProfileImage} alt="Profile Image" className='rounded-full w-10 h-10' />
+              </div>
           </ul>
         </nav>
         {isPopup && <Popup children={'Logout Succesfull!!!'} />}

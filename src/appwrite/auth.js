@@ -45,6 +45,29 @@ export class AuthService {
         }
     }
 
+    async updateName(name) {
+        try {
+            return await this.account.updateName(name)
+        } catch (error) {
+            console.log("Appwrite service :: updateName :: error", error);
+        }
+    }
+    
+    async updateEmail({ email, password }) {
+        try {
+            return await this.account.updateEmail(email, password)
+        } catch (error) {
+            console.log("Appwrite service :: updateEmail :: error", error);
+        }
+    }
+
+    async updatePassword({ newpassword, oldpassword }) {
+        try {
+            return await this.account.updatePassword(newpassword, oldpassword)
+        } catch (error) {
+            console.log("Appwrite service :: updatePassword :: error", error);
+        }
+    }
     async logout() {
         try {
             await this.account.deleteSessions();
@@ -53,7 +76,7 @@ export class AuthService {
         }
     }
 
-   
+
 }
 
 const authService = new AuthService();

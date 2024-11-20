@@ -166,7 +166,7 @@ const Dashboard = () => {
                                         <h3 className="text-sm font-semibold text-gray-800">
                                             {post.title}
                                         </h3>
-                                        <p className="text-xs text-gray-500">By {post.UserName}</p>
+                                        <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
                                     </div>
                                 </div>
                             ))

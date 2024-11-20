@@ -26,12 +26,13 @@ function App() {
     <div className='min-h-screen flex flex-wrap content-between bg-rose-50 poppins-regular'>
       <div className='w-full block'>
         <main className='  flex'>
-          <Sidebar />            <div className='w-[15%] md:w-[260px]'></div>
+          <Sidebar />
+          <div className='w-[15%] md:w-[260px]'></div>
 
           <div className='w-[85%]'>
             <Header />
             <Outlet />
-      <Footer />
+            <Footer />
           </div>
         </main>
       </div>

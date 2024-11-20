@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../appwrite/auth';
-import LogoutBtn from './Header/LogoutBtn';
 import Logo from './Logo';
 import { FaHome, FaPlus, FaSignInAlt, FaUserPlus, FaThLarge, FaList } from 'react-icons/fa';
+import { IoMdPerson } from 'react-icons/io';
+import { useSelector } from 'react-redux';
 
 const Sidebar = () => {
+    const authStatus = useSelector((state)=>state.auth.status)
     const navigate = useNavigate();
     const [isExpanded, setIsExpanded] = useState(window.innerWidth >= 768);
 
@@ -13,9 +15,9 @@ const Sidebar = () => {
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 768) {
-                setIsExpanded(true); // Always expand on larger screens
+                setIsExpanded(true); 
             } else {
-                setIsExpanded(false); // Allow toggle on smaller screens
+                setIsExpanded(false); 
             }
         };
 
@@ -29,16 +31,17 @@ const Sidebar = () => {
 
     const SideItem = [
         { name: 'Home', slug: '/', icon: <FaHome />, active: true },
-        { name: 'All Posts', slug: '/all-posts', icon: <FaList />, active: authService },
-        { name: 'Add Post', slug: '/add-post', icon: <FaPlus />, active: authService },
-        { name: 'Login', slug: '/login', icon: <FaSignInAlt />, active: !authService },
-        { name: 'SignUp', slug: '/signup', icon: <FaUserPlus />, active: !authService },
-        { name: 'Dashboard', slug: '/dashboard', icon: <FaThLarge />, active: authService },
+        { name: 'All Posts', slug: '/all-posts', icon: <FaList />, active: authStatus },
+        { name: 'Add Post', slug: '/add-post', icon: <FaPlus />, active: authStatus },
+        { name: 'Login', slug: '/login', icon: <FaSignInAlt />, active: !authStatus },
+        { name: 'SignUp', slug: '/signup', icon: <FaUserPlus />, active: !authStatus },
+        { name: 'Dashboard', slug: '/dashboard', icon: <FaThLarge />, active: authStatus },
+        { name: 'Profile', slug: '/profile', icon: <IoMdPerson />, active: authStatus },
     ];
 
     const toggleSidebar = () => {
         if (window.innerWidth < 768) {
-            setIsExpanded(!isExpanded); // Allow toggling only on small screens
+            setIsExpanded(!isExpanded); 
         }
     };
 
