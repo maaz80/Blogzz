@@ -20,7 +20,6 @@ const Dashboard = () => {
     const [postCounts, setPostCounts] = useState({ labels: [], data: [] });
 
     useEffect(() => {
-        // Fetch all posts
         appwriteService.GetPosts().then((allposts) => {
             if (allposts) {
                 console.log('Total Posts:', allposts.documents.length);
@@ -31,8 +30,7 @@ const Dashboard = () => {
                 );
 
                 console.log('Unique Users:', uniquePosts.map(post => post.UserName).join(', '));
-
-                setPosts(uniquePosts); // Set only unique posts
+                setPosts(uniquePosts);
 
                 // Reversing post for showing recent posts 
                 const reversePost = allposts.documents
@@ -42,7 +40,7 @@ const Dashboard = () => {
 
                 // Data for the graph
                 const postDates = reversePost.map(post => new Date(post.$createdAt).toLocaleDateString());
-                const uniqueDates = [...new Set(postDates)]; // Get unique dates
+                const uniqueDates = [...new Set(postDates)];
 
                 const counts = uniqueDates.map(date => postDates.filter(d => d === date).length);
 
