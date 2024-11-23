@@ -11,18 +11,18 @@ export class Service {
             .setProject(conf.appwriteProjectId);
         this.databases = new Databases(this.client);
         this.storage = new Storage(this.client)
-        
+
         if (this.client) {
             this.bucket = new Storage(this.client);
         } else {
             console.error("Appwrite client not initialized.");
         }
-        
+
     }
 
-   
 
-    async CreatePost({ title, content, featuredimage, status, userid ,UserName }) {
+
+    async CreatePost({ title, content, featuredimage, status, userid, UserName }) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -36,14 +36,13 @@ export class Service {
                     userid,
                     UserName
                 },
-                
+
             );
         } catch (error) {
             console.log('Create post' + error);
             console.log("userid:", userid);
         }
     }
-    
 
     async UpdatePost(slug, { title, content, featuredimage, status }) {
         try {
@@ -60,6 +59,35 @@ export class Service {
             )
         } catch (error) {
             console.log('UpdatePost' + error);
+
+        }
+    }
+
+    async updatePostLikes(slug, updatedLikes) {
+        try {
+            const response = await this.databases.updateDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug,
+                { likes: updatedLikes }
+            );
+            return response;
+        } catch (error) {
+            console.log('Error updating likes:', error);
+        }
+    }
+
+    async updatePostComments(slug, updatedComments) {
+        try {
+            const response = await this.databases.updateDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug,
+                { comments: updatedComments }
+            )
+            return response;
+        } catch (error) {
+            console.log('Adding Comment' + error);
 
         }
     }
@@ -132,7 +160,7 @@ export class Service {
         }
     }
 
-    getFilePreview(fileId){
+    getFilePreview(fileId) {
         return this.storage.getFilePreview(
             conf.appwriteBucketId,
             fileId

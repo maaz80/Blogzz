@@ -18,6 +18,7 @@ const Dashboard = () => {
     const [userPosts, setUserPosts] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [postCounts, setPostCounts] = useState({ labels: [], data: [] });
+    const [totalLikes, setTotalLikes] = useState('0')
 
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
@@ -63,6 +64,10 @@ const Dashboard = () => {
 
                 // Filter posts belonging to the current user
                 if (allPosts.length > 0) {
+                        const totalLikes = allPosts.reduce((total,post)=> total +post.likes.length,0)
+                        setTotalLikes( totalLikes );
+
+                    
                     const filteredPosts = allPosts.filter(
                         (post) => post.UserName === userData.name
                     );
@@ -84,10 +89,10 @@ const Dashboard = () => {
                     <div className="text-sm font-medium text-gray-500">Owner/Admin</div>
                     <div className="mt-4">
                         <div className="text-lg font-bold text-blue-600">{userPosts.length}</div>
-                        <div className="text-sm font-medium text-gray-600">Total Posts</div>
+                        <div className="text-sm font-medium text-gray-600">Your Posts</div>
                     </div>
                     <div className="mt-2">
-                        <div className="text-lg font-bold text-blue-600">10</div>
+                        <div className="text-lg font-bold text-blue-600">{totalLikes}</div>
                         <div className="text-sm font-medium text-gray-600">Total Likes</div>
                     </div>
                     {/* Admin Logo */}
