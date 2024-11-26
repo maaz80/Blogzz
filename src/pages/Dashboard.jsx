@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import appwriteService from '../appwrite/config';
 import authService from '../appwrite/auth';
-import AdminLogo from './images/Admin-Logo.png'
-import PostsImage from './images/PostsImage.png'
-import ActiveUsers from './images/ActiveUsers.png'
-import Comments from './images/Comments.png'
-import { Link } from 'react-router-dom';
-import AddPost from '../pages/AddPost';
+import AdminLogo from '../components/images/Admin-Logo.png'
+import PostsImage from '../components/images/PostsImage.png'
+import ActiveUsers from '../components/images/ActiveUsers.png'
+import Comments from '../components/images/Comments.png'
+import { Link, useNavigate } from 'react-router-dom';
+import AddPost from './AddPost';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import Button from '../components/Button';
+import Popup from '../components/Popup';
+import { BeatLoader } from 'react-spinners';
 
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
@@ -21,6 +25,7 @@ const Dashboard = () => {
     const [postCounts, setPostCounts] = useState({ labels: [], data: [] });
     const [totalLikes, setTotalLikes] = useState('0')
     const [totalComments, setTotalComments] = useState('0')
+    const [isPopup, setIsPopup] = useState(false);
 
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
@@ -55,6 +60,20 @@ const Dashboard = () => {
         });
     }, []);
 
+    // Delete post Function
+    const deletePost = (postId, featuredImage) => {
+        appwriteService.DeletePost(postId).then((status) => {
+            if (status) {
+                appwriteService.deleteFile(featuredImage);
+                setIsPopup(true);
+                setAllPosts(prevPosts => prevPosts.filter(post => post.$id !== postId));
+                setTimeout(() => {
+                    setIsPopup(false);
+                }, 1000);
+            }
+        });
+    };
+
     useEffect(() => {
         authService.getCurrentUser().then((userData) => {
             if (userData) {
@@ -81,10 +100,24 @@ const Dashboard = () => {
         });
     }, [allPosts]);
 
+    if (!currentUser) {
+        return (
+            <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
+                    <div className="flex flex-wrap">
+                        <div className="p-2 w-full h-screen mt-[10%]">
+                            <h1 className="text-2xl font-bold hover:text-gray-500">
+                                <BeatLoader/>
+                            </h1>
+                        </div>
+                    </div>
+            </div>
+        )
+    }
     return (
         <div className='min-h-screen p-2 xl:p-10 '>
             <h1 className='text-gray-600 text-3xl font-semibold ml-0 xl:-ml-4 mt-0 xl:-mt-5 mb-10'>Welcome Back! 👋</h1>
             <div className="flex flex-wrap justify-around gap-16 xl:gap-0">
+                {isPopup && <Popup>Delete Successful!!!</Popup>}
 
                 {/* Admin Info  */}
                 <div className="relative w-[99%] xl:w-80 h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4">
@@ -160,9 +193,10 @@ const Dashboard = () => {
                             allPosts.slice(0, 5).map((post) => (
                                 <div
                                     key={post.$id}
-                                    className="flex items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow"
+                                    className="flex justify-between items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow"
                                 >
-                                    {/* Post Image */}
+                                    <div className="flex item-center gap-4">
+                                        {/* Post Image */}
                                     <img
                                         src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
                                         alt={post.title}
@@ -175,6 +209,10 @@ const Dashboard = () => {
                                         </h3>
                                         <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
                                     </div>
+                                    </div>
+                                    <Button bgColor="bg-rose-500" onClick={() => deletePost(post.$id, post.featuredimage)}>
+                                        Delete
+                                    </Button>
                                 </div>
                             ))
                         ) : (

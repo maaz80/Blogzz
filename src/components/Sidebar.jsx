@@ -48,12 +48,12 @@ const Sidebar = () => {
     return (
         <div
             className={`fixed top-0 left-0 h-screen ${
-                isExpanded ? 'w-60' : 'w-12'
+          isExpanded ? 'w-52' : 'w-[12%]' 
             } bg-rose-700 transition-all duration-300 rounded-r-3xl flex flex-col items-center z-40`}
         >
             {/* Logo Section */}
-            <div className={`p-5 ${isExpanded ? 'block' : 'hidden md:block'} w-full`}>
-                <Logo textColor="text-white mb-10" />
+            <div className={`p-7 pl-2 ${isExpanded ? 'block' : 'hidden md:block'} w-full`}>
+                <Logo width={'w-32'} height={'h-20'} />
             </div>
 
             {/* Sidebar Items */}

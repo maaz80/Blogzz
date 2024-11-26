@@ -27,9 +27,9 @@ function App() {
       <div className='w-full block'>
         <main className='  flex'>
           <Sidebar />
-          <div className='w-[15%] md:w-[260px]'></div>
+          <div className='w-[15%] md:w-52'></div>
 
-          <div className='w-[85%]'>
+          <div className='w-[90%]'>
             <Header />
             <Outlet />
             <Footer />

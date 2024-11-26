@@ -27,35 +27,40 @@ function Header() {
   };
 
   // Finding User 
-const userData=()=>{
-  authService.getCurrentUser().then((userData)=>{
-    if(userData){
-      setUsername(userData.name)
-    }
-  })
+  const userData = () => {
+    authService.getCurrentUser().then((userData) => {
+      if (userData) {
+        setUsername(userData.name)
+      }
+    })
 
-}
-userData()
+  }
+  userData()
 
   return (
-    <header className="py-2 w-full px-4 shadow bg-rose-800/10 rounded-b-md text-gray-600 z-50 ">
+    <header className="py-2 w-full px-4 shadow bg-rose-800/20 md:bg-rose-800/10 rounded-b-md text-gray-600 z-50 ml-3">
       <Container>
         <nav className="flex items-center justify-between">
-          <div><Logo textColor="text-gray-600 bloack md:hidden ml-4 md:ml-0" /></div>
+          <div><Logo width={'w-14 md:w-20'} height={'h-8 md:h-12'} /></div>
 
-          {/* Hamburger Icon for Mobile */}
-          <button 
-            onClick={handleMenuToggle}
-            className="text-gray-600 text-2xl md:hidden focus:outline-none"
-          >
-            {isMenuOpen ? <HiX /> : <HiMenu />}
-          </button>
+          <div className='flex items-center gap-2'>
+            {/* User Name  */}
+            <div className='w-full  items-center gap-1 justify-center flex md:hidden'>
+              <div className='text-white font-semibold '>{username}</div>
+            </div>
 
+            {/* Hamburger Icon for Mobile */}
+            <button
+              onClick={handleMenuToggle}
+              className="text-gray-600 text-2xl md:hidden focus:outline-none"
+            >
+              {isMenuOpen ? <HiX color='white' /> : <HiMenu color='white' />}
+            </button>
+          </div>
           {/* Navigation Links */}
           <ul
-            className={`flex-col z-50 right-0 top-[60px] shadow-md shadow-gray-400 md:shadow-none text-rose-800 md:text-gray-600 rounded-md bg-white md:bg-transparent absolute md:static md:flex-row md:flex  items-center transition-all duration-1300 ease-in-out ${
-              isMenuOpen ? 'flex ' : 'hidden md:flex'
-            }`}
+            className={`flex-col z-50 right-0 top-[50px] shadow-md shadow-gray-400 md:shadow-none text-rose-800 md:text-gray-600 rounded-md bg-white md:bg-transparent absolute md:static md:flex-row md:flex  items-center transition-all duration-1300 ease-in-out ${isMenuOpen ? 'flex ' : 'hidden md:flex'
+              }`}
           >
             {navItems.map((item) =>
               item.active ? (
@@ -72,15 +77,20 @@ userData()
                 </li>
               ) : null
             )}
+
+            {/* Logout Button  */}
             {authStatus && (
-              <li className="mt-0 w-full mr-8">
+              <li className="mt-0 w-full mr-0 md:mr-8">
                 <LogoutBtn />
               </li>
             )}
-            <div className='w-full flex items-center gap-3 justify-center'>
+
+            {/* User Name  */}
+            <div className='w-full  items-center gap-3 justify-center hidden md:flex'>
               <div className='text-gray-600 font-semibold w-40'>{username}</div>
               <img src={ProfileImage} alt="Profile Image" className='rounded-full w-10 h-10' />
-              </div>
+            </div>
+
           </ul>
         </nav>
         {isPopup && <Popup children={'Logout Succesfull!!!'} />}

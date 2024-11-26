@@ -1,6 +1,7 @@
 import  { useEffect, useState } from 'react'
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from '../components'
+import { BeatLoader } from 'react-spinners';
 
 function Home() {
     const [posts, setPosts] = useState([])
@@ -19,21 +20,19 @@ function Home() {
 
     if (posts.length === 0) {
         return (
-            <div className="w-full py-8 mt-4 text-center">
-                <Container>
+            <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full h-screen mt-[10%]">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
-                                Start adding Posts ;)
+                                <BeatLoader/>
                             </h1>
                         </div>
                     </div>
-                </Container>
             </div>
         )
     }
     return (
-        <div className='w-full py-4 pl-1 md:pl-5'>
+        <div className='w-full py-4 pl-1 md:pl-0'>
             {/* <h1 className='font-semibold text-5xl text-rose-400  pb-3'>Home</h1> */}
             <Container>
                 <div className='flex flex-wrap w-[100%] gap-3 '>

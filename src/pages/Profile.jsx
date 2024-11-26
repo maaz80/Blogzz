@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import appwriteService from '../appwrite/config'
 import authService from '../appwrite/auth';
-import AdminLogo from './images/Admin-Logo.png'
-import Button from './Button';
-import { Input } from './index';
+import AdminLogo from '../components/images/Admin-Logo.png'
+import Button from '../components/Button';
+import { Input } from '../components/index';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import AddPost from '../pages/AddPost';
+import AddPost from './AddPost';
+import { BeatLoader } from 'react-spinners';
 
 const Profile = () => {
     const [allPosts, setAllPosts] = useState([]);
@@ -132,6 +133,19 @@ const Profile = () => {
         navigate(`/post/${userPosts[0].$id}`)
     }
 
+    if (userPosts.length === 0) {
+        return (
+            <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
+                    <div className="flex flex-wrap">
+                        <div className="p-2 w-full h-screen mt-[10%]">
+                            <h1 className="text-2xl font-bold hover:text-gray-500">
+                                <BeatLoader/>
+                            </h1>
+                        </div>
+                    </div>
+            </div>
+        )
+    }
     return (
         <div className='min-h-screen p-2 xl:p-10 '>
             <h1 className='text-gray-600 text-3xl font-semibold ml-0 xl:-ml-4 mt-0 xl:-mt-5 mb-10'>Welcome Back! 👋</h1>
@@ -141,27 +155,27 @@ const Profile = () => {
                     {/* User Card  */}
                     <div className="relative w-[99%] h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 mb-4">
                         {/* Admin Information */}
-                        <div className="text-xl font-semibold text-gray-700">{currentUser}</div>
-                        <div className="text-sm font-medium text-gray-500">{userLabel}</div>
+                        <div className="text-xl font-semibold text-gray-700">{currentUser ? currentUser : <BeatLoader size={10} />}</div>
+                        <div className="text-sm font-medium text-gray-500">{userLabel ? userLabel : <BeatLoader size={10} />}</div>
 
                         <div className='flex items-center gap-5 md:gap-10'>
                             <div className="mt-4">
-                                <div className="text-lg font-bold text-blue-600">{userPosts.length}</div>
+                                <div className="text-lg font-bold text-blue-600">{userPosts ? userPosts.length : <BeatLoader size={10} />}</div>
                                 <div className="text-sm font-medium text-gray-600">Total Posts</div>
                             </div>
                             <div className="mt-4">
-                                <div className="text-lg font-bold text-blue-600">{userComments}</div>
+                                <div className="text-lg font-bold text-blue-600">{userComments ? userComments : <BeatLoader size={10} />}</div>
                                 <div className="text-sm font-medium text-gray-600">Comments</div>
                             </div>
                         </div>
 
                         <div className='flex items-center gap-5 md:gap-10'>
                             <div className="mt-2">
-                                <div className="text-lg font-bold text-blue-600">{userLikes}</div>
+                                <div className="text-lg font-bold text-blue-600">{userLikes ? userLikes : <BeatLoader size={10} />}</div>
                                 <div className="text-sm font-medium text-gray-600">Total Likes</div>
                             </div>
                             <div className="mt-2">
-                                <div className="text-lg font-bold text-blue-600">{creationDate} </div>
+                                <div className="text-lg font-bold text-blue-600">{creationDate ? creationDate : <BeatLoader size={10} />} </div>
                                 <div className="text-sm font-medium text-gray-600">Joining Days</div>
                             </div>
                         </div>

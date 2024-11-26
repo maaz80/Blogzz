@@ -1,9 +1,10 @@
 import React from 'react'
+import LogoImg from '../components/images/Logo.png'
 
-const Logo = ({width = '100px' ,textColor}) => {
+const Logo = ({width ,height}) => {
   return (
-    <div className={`text-3xl font-semibold p-2.5 ${textColor}`}>
-      Blogzz
+    <div className={`${width} ${height} `}>
+     <img src={LogoImg} alt="Logo"  className='w-full h-full'/>
     </div>
   )
 }
