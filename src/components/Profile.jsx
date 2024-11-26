@@ -5,10 +5,14 @@ import AdminLogo from './images/Admin-Logo.png'
 import Button from './Button';
 import { Input } from './index';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import AddPost from '../pages/AddPost';
 
 const Profile = () => {
     const [allPosts, setAllPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
+    const [userLikes, setUserLikes] = useState([])
+    const [userComments, setUserComments] = useState([])
     const [currentUser, setCurrentUser] = useState('Unknown');
     const [currentUserEmail, setCurrentUserEmail] = useState('Unknown');
     const [userLabel, setUserLabel] = useState('')
@@ -17,6 +21,8 @@ const Profile = () => {
     const { register: registerEmail, handleSubmit: handleSubmitEmail } = useForm()
     const [userNameEditable, setUserNameEditable] = useState(false)
     const [userEmailEditable, setUserEmailEditable] = useState(false)
+    const [creationDate, setCreationDate] = useState('')
+    const navigate = useNavigate();
 
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
@@ -48,10 +54,33 @@ const Profile = () => {
 
                 // Filter posts belonging to the current user
                 if (allPosts.length > 0) {
+
+                    // Posts 
                     const filteredPosts = allPosts.filter(
                         (post) => post.UserName === userData.name
                     );
                     setUserPosts(filteredPosts);
+
+                    // Likes 
+                    const filteredLikes = allPosts.filter(
+                        (like) => like.likes.includes(userData.email)
+                    )
+                    setUserLikes(filteredLikes.length)
+
+                    // comments
+                    const filteredComments = allPosts.filter(
+                        (post) => post.comments.some((comment) => comment.split(':')[0].trim() === userData.name)
+                    )
+                    setUserComments(filteredComments.length)
+
+                    // Account creation date
+                    const createdAt = new Date(userData.$createdAt);
+                    const currentDate = new Date();
+                    const diffInMilliseconds = currentDate - createdAt;
+                    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+                    setCreationDate(`${diffInDays}`)
+
+
                 }
             }
         });
@@ -81,7 +110,7 @@ const Profile = () => {
         }
     };
 
-    const handleEmail=(userEmail)=>{
+    const handleEmail = (userEmail) => {
         try {
             authService.updateEmail(userEmail)
             alert('Email Updated!!!');
@@ -98,6 +127,11 @@ const Profile = () => {
         setUserEmailEditable(!userEmailEditable)
     }
 
+    const handlePostOpen = (e) => {
+        e.stopPropagation()
+        navigate(`/post/${userPosts[0].$id}`)
+    }
+
     return (
         <div className='min-h-screen p-2 xl:p-10 '>
             <h1 className='text-gray-600 text-3xl font-semibold ml-0 xl:-ml-4 mt-0 xl:-mt-5 mb-10'>Welcome Back! 👋</h1>
@@ -105,27 +139,82 @@ const Profile = () => {
 
                 <div className='w-[100%] md:w-[50%]'>
                     {/* User Card  */}
-                    <div className="relative w-[99%] xl:w-80 h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4">
+                    <div className="relative w-[99%] h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 mb-4">
                         {/* Admin Information */}
                         <div className="text-xl font-semibold text-gray-700">{currentUser}</div>
                         <div className="text-sm font-medium text-gray-500">{userLabel}</div>
-                        <div className="mt-4">
-                            <div className="text-lg font-bold text-blue-600">{userPosts.length}</div>
-                            <div className="text-sm font-medium text-gray-600">Total Posts</div>
+
+                        <div className='flex items-center gap-5 md:gap-10'>
+                            <div className="mt-4">
+                                <div className="text-lg font-bold text-blue-600">{userPosts.length}</div>
+                                <div className="text-sm font-medium text-gray-600">Total Posts</div>
+                            </div>
+                            <div className="mt-4">
+                                <div className="text-lg font-bold text-blue-600">{userComments}</div>
+                                <div className="text-sm font-medium text-gray-600">Comments</div>
+                            </div>
                         </div>
-                        <div className="mt-2">
-                            <div className="text-lg font-bold text-blue-600">10</div>
-                            <div className="text-sm font-medium text-gray-600">Total Likes</div>
+
+                        <div className='flex items-center gap-5 md:gap-10'>
+                            <div className="mt-2">
+                                <div className="text-lg font-bold text-blue-600">{userLikes}</div>
+                                <div className="text-sm font-medium text-gray-600">Total Likes</div>
+                            </div>
+                            <div className="mt-2">
+                                <div className="text-lg font-bold text-blue-600">{creationDate} </div>
+                                <div className="text-sm font-medium text-gray-600">Joining Days</div>
+                            </div>
                         </div>
+
                         {/* Admin Logo */}
                         <div className="absolute w-64 h-80 -top-20 -right-14  flex items-center justify-center">
                             <img src={AdminLogo} alt="Admin Logo" className="w-[100%] h-[100%] object-contain drop-shadow-xl shadow-black" />
                         </div>
                     </div>
+
+                    {/* Recent Posts  */}
+                    <div className="relative w-[99%] h-[340px] overflow-y-scroll rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 ">
+                        {/* Header Section */}
+                        <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm mb-1">
+                            <h2 className="text-lg font-bold text-gray-700">Recent Blogs</h2>
+                            <Link
+                                to="/add-post"
+                                element={<AddPost />}
+                                className="text-blue-500 hover:text-blue-600 font-medium underline"
+                            >
+                                Add Post
+                            </Link>
+                        </div>
+                        {userPosts.length > 0 ? (
+                            userPosts.slice(0, 5).map((post) => (
+                                <div
+                                    key={post.$id}
+                                    onClick={handlePostOpen}
+                                    className="flex items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow mb-1"
+                                >
+                                    {/* Post Image */}
+                                    <img
+                                        src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
+                                        alt={post.title}
+                                        className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    {/* Post Details */}
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-gray-800">
+                                            {post.title}
+                                        </h3>
+                                        <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center text-gray-500">No Posts Yet</div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Personal Details */}
-                <div className="w-[100%] md:w-[50%] ">
+                <div className="w-[100%] md:w-[50%] mt-16 xl:mt-0">
                     <h2 className="text-gray-600 text-2xl font-semibold mt-0 md:-mt-[80px]">Personal Details</h2>
                     <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow-md rounded-md p-6 ">
                         <form onSubmit={handleSubmitName(handleName)}>
@@ -155,34 +244,34 @@ const Profile = () => {
                     {/* Email form  */}
                     <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow-md rounded-md p-6 mt-2">
                         <form onSubmit={handleSubmitEmail(handleEmail)} >
-                           <div className='flex flex-col md:flex-row justify-between '>
-                           <div className='mb-4'>
-                                <Input
-                                    label="Email "
-                                    type="email"
-                                    value={currentUserEmail}
-                                    readOnly={!userEmailEditable}
-                                    className={`w-full px-4 py-3 rounded-md shadow-sm border border-gray-300   ${userEmailEditable && 'focus:outline-none focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="Enter your email"
-                                    {...registerEmail("email", {
-                                        required: "Email is required",
-                                        onChange:(e)=>setCurrentUserEmail(e.target.value)
-                                    })}
-                                />
+                            <div className='flex flex-col md:flex-row justify-between '>
+                                <div className='mb-4'>
+                                    <Input
+                                        label="Email "
+                                        type="email"
+                                        value={currentUserEmail}
+                                        readOnly={!userEmailEditable}
+                                        className={`w-full px-4 py-3 rounded-md shadow-sm border border-gray-300   ${userEmailEditable && 'focus:outline-none focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="Enter your email"
+                                        {...registerEmail("email", {
+                                            required: "Email is required",
+                                            onChange: (e) => setCurrentUserEmail(e.target.value)
+                                        })}
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <Input
+                                        label="Password "
+                                        type="password"
+                                        readOnly={!userEmailEditable}
+                                        className={`w-full px-4 py-3 rounded-md shadow-sm border border-gray-300   ${userEmailEditable && 'focus:outline-none focus:ring-2 focus:ring-blue-500'}`}
+                                        placeholder="Enter your password"
+                                        {...registerEmail("password", {
+                                            required: "Password is required",
+                                        })}
+                                    />
+                                </div>
                             </div>
-                            <div className="mb-4">
-                                <Input
-                                    label="Password "
-                                    type="password"
-                                    readOnly={!userEmailEditable}
-                                    className={`w-full px-4 py-3 rounded-md shadow-sm border border-gray-300   ${userEmailEditable && 'focus:outline-none focus:ring-2 focus:ring-blue-500'}`}
-                                    placeholder="Enter your password"
-                                    {...registerEmail("password", {
-                                        required: "Password is required",
-                                    })}
-                                />
-                            </div>
-                           </div>
                             <Button bgColor='bg-blue-400' className='mr-0 md:mr-3' textColor='text-white' type='button' onClick={handleEmailEditable}>Change Email</Button>
                             {userEmailEditable && (
                                 <Button bgColor='bg-green-400' textColor='text-white' type='submit' >Save UserName</Button>

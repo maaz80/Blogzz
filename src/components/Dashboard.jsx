@@ -10,6 +10,7 @@ import AddPost from '../pages/AddPost';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
@@ -19,6 +20,7 @@ const Dashboard = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [postCounts, setPostCounts] = useState({ labels: [], data: [] });
     const [totalLikes, setTotalLikes] = useState('0')
+    const [totalComments, setTotalComments] = useState('0')
 
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
@@ -37,7 +39,7 @@ const Dashboard = () => {
                 const reversePost = allposts.documents
                     .slice()
                     .sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt));
-                setAllPosts(reversePost); 
+                setAllPosts(reversePost);
 
                 // Data for the graph
                 const postDates = reversePost.map(post => new Date(post.$createdAt).toLocaleDateString());
@@ -64,10 +66,12 @@ const Dashboard = () => {
 
                 // Filter posts belonging to the current user
                 if (allPosts.length > 0) {
-                        const totalLikes = allPosts.reduce((total,post)=> total +post.likes.length,0)
-                        setTotalLikes( totalLikes );
+                    const totalLikes = allPosts.reduce((total, post) => total + post.likes.length, 0)
+                    setTotalLikes(totalLikes);
 
-                    
+                    const totalComments = allPosts.reduce((total, post) => total + post.comments.length, 0)
+                    setTotalComments(totalComments);
+
                     const filteredPosts = allPosts.filter(
                         (post) => post.UserName === userData.name
                     );
@@ -76,7 +80,7 @@ const Dashboard = () => {
             }
         });
     }, [allPosts]);
-    
+
     return (
         <div className='min-h-screen p-2 xl:p-10 '>
             <h1 className='text-gray-600 text-3xl font-semibold ml-0 xl:-ml-4 mt-0 xl:-mt-5 mb-10'>Welcome Back! 👋</h1>
@@ -131,7 +135,7 @@ const Dashboard = () => {
                         <img src={Comments} alt="Total Comments" className="w-full h-full object-contain" />
                     </div>
                     <div className="mt-16 text-center">
-                        <div className="text-3xl font-bold text-red-700">87</div>
+                        <div className="text-3xl font-bold text-red-700">{totalComments}</div>
                         <div className="text-sm font-medium text-gray-600">Total Comments</div>
                     </div>
                 </div>
