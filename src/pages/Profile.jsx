@@ -146,7 +146,7 @@ const Profile = () => {
         navigate(`/post/${userPosts[0].$id}`)
     }
 
-    if (userPosts.length === 0) {
+    if (!userLabel) {
         return (
             <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
                 <div className="flex flex-wrap">
@@ -166,29 +166,29 @@ const Profile = () => {
 
                 <div className='w-[100%] md:w-[50%]'>
                     {/* User Card  */}
-                    <div className="relative w-[99%] h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 mb-4">
+                    <div className="relative w-[99%] h-56 rounded-md shadow-lg bg-gradient-to-r from-rose-200 to-rose-300 border border-gray-200 p-4 mb-4">
                         {/* Admin Information */}
                         <div className="text-xl font-semibold text-gray-700">{currentUser ? currentUser : <BeatLoader size={10} />}</div>
                         <div className="text-sm font-medium text-gray-500">{userLabel ? userLabel : <BeatLoader size={10} />}</div>
 
                         <div className='flex items-center gap-5 md:gap-10'>
                             <div className="mt-4">
-                                <div className="text-lg font-bold text-blue-600">{userPosts ? userPosts.length : <BeatLoader size={10} />}</div>
+                                <div className="text-lg font-bold text-rose-600">{userPosts ? userPosts.length : <BeatLoader size={10} />}</div>
                                 <div className="text-sm font-medium text-gray-600">Total Posts</div>
                             </div>
                             <div className="mt-4">
-                                <div className="text-lg font-bold text-blue-600">{userComments ? userComments : <BeatLoader size={10} />}</div>
+                                <div className="text-lg font-bold text-rose-600">{userComments ? userComments : <BeatLoader size={10} />}</div>
                                 <div className="text-sm font-medium text-gray-600">Comments</div>
                             </div>
                         </div>
 
                         <div className='flex items-center gap-5 md:gap-10'>
                             <div className="mt-2">
-                                <div className="text-lg font-bold text-blue-600">{userLikes ? userLikes : <BeatLoader size={10} />}</div>
+                                <div className="text-lg font-bold text-rose-600">{userLikes ? userLikes : <BeatLoader size={10} />}</div>
                                 <div className="text-sm font-medium text-gray-600">Total Likes</div>
                             </div>
                             <div className="mt-2">
-                                <div className="text-lg font-bold text-blue-600">{creationDate ? creationDate : <BeatLoader size={10} />} </div>
+                                <div className="text-lg font-bold text-rose-600">{creationDate ? creationDate : <BeatLoader size={10} />} </div>
                                 <div className="text-sm font-medium text-gray-600">Joining Days</div>
                             </div>
                         </div>
@@ -200,14 +200,14 @@ const Profile = () => {
                     </div>
 
                     {/* Recent Posts  */}
-                    <div className="relative w-[99%] h-[340px] overflow-y-scroll rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 ">
+                    <div className="relative w-[99%] h-[340px] overflow-y-scroll rounded-md shadow-lg bg-gradient-to-r from-rose-200 to-rose-300 border border-gray-200 p-4 ">
                         {/* Header Section */}
                         <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm mb-1">
                             <h2 className="text-lg font-bold text-gray-700">Recent Blogs</h2>
                             <Link
                                 to="/add-post"
                                 element={<AddPost />}
-                                className="text-blue-500 hover:text-blue-600 font-medium underline"
+                                className="text-blue-500 hover:text-rose-600 font-medium underline"
                             >
                                 Add Post
                             </Link>
@@ -234,7 +234,7 @@ const Profile = () => {
                                             <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
                                         </div>
                                     </div>
-                                    <Button bgColor="bg-rose-500" onClick={() => deletePost(post.$id, post.featuredimage)}>
+                                    <Button bgColor="bg-rose-500 hover:bg-rose-600" onClick={() => deletePost(post.$id, post.featuredimage)}>
                                         Delete
                                     </Button>
                                 </div>
@@ -248,7 +248,7 @@ const Profile = () => {
                 {/* Personal Details */}
                 <div className="w-[100%] md:w-[50%] mt-16 xl:mt-0">
                     <h2 className="text-gray-600 text-2xl font-semibold mt-0 md:-mt-[80px]">Personal Details</h2>
-                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow-md rounded-md p-6 ">
+                    <div className="bg-gradient-to-r from-rose-200 to-rose-300 shadow-md rounded-md p-6 ">
                         <form onSubmit={handleSubmitName(handleName)}>
                             {/* Username */}
                             <div className="mb-4">
@@ -266,15 +266,15 @@ const Profile = () => {
                                     })}
                                 />
                             </div>
-                            <Button bgColor='bg-blue-400' className='mr-3' textColor='text-white' type='button' onClick={handleNameEditable}>Change UserName</Button>
+                            <Button bgColor='bg-rose-500 hover:bg-rose-600' className='mr-3' textColor='text-white' type='button' onClick={handleNameEditable}>Change UserName</Button>
                             {userNameEditable && (
-                                <Button bgColor='bg-green-400' textColor='text-white' type='submit' >Save UserName</Button>
+                                <Button bgColor='bg-rose-400 hover:bg-rose-600' textColor='text-white' type='submit' >Save UserName</Button>
                             )}
                         </form>
                     </div>
 
                     {/* Email form  */}
-                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow-md rounded-md p-6 mt-2">
+                    <div className="bg-gradient-to-r from-rose-200 to-rose-300 shadow-md rounded-md p-6 mt-2">
                         <form onSubmit={handleSubmitEmail(handleEmail)} >
                             <div className='flex flex-col md:flex-row justify-between '>
                                 <div className='mb-4'>
@@ -304,15 +304,15 @@ const Profile = () => {
                                     />
                                 </div>
                             </div>
-                            <Button bgColor='bg-blue-400' className='mr-0 md:mr-3' textColor='text-white' type='button' onClick={handleEmailEditable}>Change Email</Button>
+                            <Button bgColor='bg-rose-500 hover:bg-rose-600' className='mr-0 md:mr-3' textColor='text-white' type='button' onClick={handleEmailEditable}>Change Email</Button>
                             {userEmailEditable && (
-                                <Button bgColor='bg-green-400' textColor='text-white' type='submit' >Save UserName</Button>
+                                <Button bgColor='bg-rose-400 hover:bg-rose-600' textColor='text-white' type='submit' >Save UserName</Button>
                             )}
                         </form>
                     </div>
 
                     {/* Password COntainer  */}
-                    <div className='bg-gradient-to-r from-blue-50 to-blue-100 shadow-md rounded-md p-6 mt-2'>
+                    <div className='bg-gradient-to-r from-rose-200 to-rose-300 shadow-md rounded-md p-6 mt-2'>
                         <form onSubmit={handleSubmitPassword(handleUpdatePass)} className='space-y-6'>
 
                             <div className="mb-4">
@@ -337,7 +337,7 @@ const Profile = () => {
                                     })}
                                 />
                             </div>
-                            <Button bgColor='bg-blue-400' textColor='text-white' type='submit'>Change Password</Button>
+                            <Button bgColor='bg-rose-500 hover:bg-rose-600' textColor='text-white' type='submit'>Change Password</Button>
                         </form>
                     </div>
                 </div>

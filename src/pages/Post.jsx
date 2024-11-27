@@ -111,13 +111,13 @@ function Post() {
     if (!userData) {
         return (
             <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full h-screen mt-[10%]">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
-                                <BeatLoader/>
-                            </h1>
-                        </div>
+                <div className="flex flex-wrap">
+                    <div className="p-2 w-full h-screen mt-[10%]">
+                        <h1 className="text-2xl font-bold hover:text-gray-500">
+                            <BeatLoader />
+                        </h1>
                     </div>
+                </div>
             </div>
         )
     }
@@ -146,7 +146,7 @@ function Post() {
                     {isPopup && <Popup>Delete Successful!!!</Popup>}
 
                 </div>
-                <div className="flex justify-start items-start flex-col ml-0 md:ml-10 w-[100%] md:w-[30%]">
+                <div className="flex justify-start items-start flex-col ml-0 md:ml-10 w-[100%] md:w-[35%]">
                     <div className="w-full mb-6">
                         <h1 className="text-2xl font-semibold">Title : {post.title}</h1>
                     </div>
@@ -154,7 +154,7 @@ function Post() {
                     <div className="mb-6 font-semibold">Date: {createdAt}</div>
                     <div className="mb-6 font-semibold">Liked by {post.likes.length} people</div>
                     <div className="mb-6 font-semibold">Status: {post.status}</div>
-                    <div className="browser-css">{parse(post.content)}</div>
+                    <div className="browser-css h-52 overflow-y-scroll">{parse(post.content)}</div>
                 </div>
             </div>
             <div className="mt-6 mx-2">

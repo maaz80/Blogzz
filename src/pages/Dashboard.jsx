@@ -120,16 +120,16 @@ const Dashboard = () => {
                 {isPopup && <Popup>Delete Successful!!!</Popup>}
 
                 {/* Admin Info  */}
-                <div className="relative w-[99%] xl:w-80 h-56 rounded-md shadow-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4">
+                <div className="relative w-[99%] xl:w-80 h-56 rounded-md shadow-lg bg-gradient-to-r from-rose-200 to-rose-400 border border-gray-200 p-4">
                     {/* Admin Information */}
                     <div className="text-xl font-semibold text-gray-700">{currentUser}</div>
                     <div className="text-sm font-medium text-gray-500">Owner/Admin</div>
                     <div className="mt-4">
-                        <div className="text-lg font-bold text-blue-600">{userPosts.length}</div>
+                        <div className="text-lg font-bold text-rose-600">{userPosts.length}</div>
                         <div className="text-sm font-medium text-gray-600">Your Posts</div>
                     </div>
                     <div className="mt-2">
-                        <div className="text-lg font-bold text-blue-600">{totalLikes}</div>
+                        <div className="text-lg font-bold text-rose-600">{totalLikes}</div>
                         <div className="text-sm font-medium text-gray-600">Total Likes</div>
                     </div>
                     {/* Admin Logo */}
@@ -139,20 +139,20 @@ const Dashboard = () => {
                 </div>
 
                 {/* For Total Posts  */}
-                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-200 p-4 hover:shadow-xl transition-shadow duration-300">
+                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-rose-200 to-rose-400 border border-gray-200 p-4 hover:shadow-xl transition-shadow duration-300">
                     {/* Image */}
                     <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 w-40 h-32">
                         <img src={PostsImage} alt="Posts" className="w-full h-full object-contain " />
                     </div>
                     {/* Content */}
                     <div className="mt-20 text-center">
-                        <div className="text-2xl font-bold text-blue-600">{allPosts.length}</div>
+                        <div className="text-2xl font-bold text-rose-900">{allPosts.length}</div>
                         <div className="text-sm font-medium text-gray-600">Total Posts</div>
                     </div>
                 </div>
 
                 {/* For Active Users  */}
-                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300">
+                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-rose-200 to-rose-400 border border-gray-300 p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300">
                     <div className="absolute -top-24 w-48 h-48">
                         <img src={ActiveUsers} alt="Active Users" className="w-full h-full object-contain" />
                     </div>
@@ -163,7 +163,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* For Total Comments  */}
-                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300">
+                <div className="w-[99%] xl:w-56 h-56 relative rounded-lg shadow-md bg-gradient-to-r from-rose-200 to-rose-400 border border-gray-300 p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300">
                     <div className="absolute -top-20 w-32 h-40">
                         <img src={Comments} alt="Total Comments" className="w-full h-full object-contain" />
                     </div>
@@ -174,7 +174,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Latest Posts  */}
-                <div className="w-[99%] xl:w-[35%] h-72 overflow-y-scroll relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-2 xl:p-6 mt-0 xl:mt-10 hover:shadow-xl transition-shadow duration-300">
+                <div className="w-[99%] xl:w-[35%] h-72 overflow-y-scroll relative rounded-lg shadow-md bg-gradient-to-r from-rose-200 to-rose-400 border border-gray-300 p-2 xl:p-6 mt-0 xl:mt-10 hover:shadow-xl transition-shadow duration-300">
                     {/* Header Section */}
                     <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm">
                         <h2 className="text-lg font-bold text-gray-700">Recent Blogs</h2>
@@ -210,7 +210,7 @@ const Dashboard = () => {
                                             <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
                                         </div>
                                     </div>
-                                    <Button bgColor="bg-rose-500" onClick={() => deletePost(post.$id, post.featuredimage)}>
+                                    <Button bgColor="bg-rose-500 hover:bg-rose-600" onClick={() => deletePost(post.$id, post.featuredimage)}>
                                         Delete
                                     </Button>
                                 </div>
@@ -222,7 +222,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Graph - Posts per Day */}
-                <div className="w-[99%] xl:w-[56%] h-auto xl:h-72 relative rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 border border-gray-300 p-1 xl:p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300 mt-0 xl:mt-10">
+                <div className="w-[99%] xl:w-[56%] h-auto xl:h-72 relative rounded-lg shadow-md bg-gradient-to-r from-rose-200 to-rose-400 border border-gray-300 p-1 xl:p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300 mt-0 xl:mt-10">
                     <h2 className="text-xl font-semibold text-gray-700 mb-4">Posts Per Day</h2>
                     <div className="w-full h-[200px] xl:h-[300px]">
                         <Line
@@ -232,7 +232,7 @@ const Dashboard = () => {
                                     {
                                         label: 'Posts Per Day',
                                         data: postCounts.data,
-                                        borderColor: '#4c6ef5',
+                                        borderColor: '#900000',
                                         backgroundColor: 'rgba(76, 110, 245, 0.2)',
                                         tension: 0.4,
                                         fill: true,
