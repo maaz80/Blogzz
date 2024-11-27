@@ -5,6 +5,7 @@ import { Button } from "../components";
 import parse from "html-react-parser";
 import authService from "../appwrite/auth";
 import Popup from "../components/Popup";
+import { BeatLoader } from "react-spinners";
 
 function Post() {
     const [post, setPost] = useState(null);
@@ -107,6 +108,19 @@ function Post() {
         }
     };
 
+    if (!userData) {
+        return (
+            <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
+                    <div className="flex flex-wrap">
+                        <div className="p-2 w-full h-screen mt-[10%]">
+                            <h1 className="text-2xl font-bold hover:text-gray-500">
+                                <BeatLoader/>
+                            </h1>
+                        </div>
+                    </div>
+            </div>
+        )
+    }
 
     return post && userData ? (
         <div className="py-8 mx-2 md:mx-0 min-h-screen">
@@ -143,7 +157,7 @@ function Post() {
                     <div className="browser-css">{parse(post.content)}</div>
                 </div>
             </div>
-            <div className="mt-6">
+            <div className="mt-6 mx-2">
                 <h2 className="text-xl font-semibold mb-4">Comments</h2>
                 <div>
                     {comments.length > 0 ? (

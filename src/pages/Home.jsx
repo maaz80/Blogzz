@@ -32,10 +32,10 @@ function Home() {
         )
     }
     return (
-        <div className='w-full py-4 pl-1 md:pl-0'>
+        <div className='w-full py-4 '>
             {/* <h1 className='font-semibold text-5xl text-rose-400  pb-3'>Home</h1> */}
             <Container>
-                <div className='flex flex-wrap w-[100%] gap-3 '>
+                <div className='flex flex-wrap w-[100%] gap-2 '>
                     {posts.map((post) => (
                         <div key={post.$id} className='p-0 md:p-2 '>
                             <PostCard {...post} />

@@ -103,13 +103,13 @@ const Dashboard = () => {
     if (!currentUser) {
         return (
             <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full h-screen mt-[10%]">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
-                                <BeatLoader/>
-                            </h1>
-                        </div>
+                <div className="flex flex-wrap">
+                    <div className="p-2 w-full h-screen mt-[10%]">
+                        <h1 className="text-2xl font-bold hover:text-gray-500">
+                            <BeatLoader />
+                        </h1>
                     </div>
+                </div>
             </div>
         )
     }
@@ -197,18 +197,18 @@ const Dashboard = () => {
                                 >
                                     <div className="flex item-center gap-4">
                                         {/* Post Image */}
-                                    <img
-                                        src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
-                                        alt={post.title}
-                                        className="w-12 h-12 rounded-md object-cover"
-                                    />
-                                    {/* Post Details */}
-                                    <div>
-                                        <h3 className="text-sm font-semibold text-gray-800">
-                                            {post.title}
-                                        </h3>
-                                        <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
-                                    </div>
+                                        <img
+                                            src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
+                                            alt={post.title}
+                                            className="w-12 h-12 rounded-md object-cover"
+                                        />
+                                        {/* Post Details */}
+                                        <div className='mt-1'>
+                                            <h3 className="text-sm font-semibold text-gray-800">
+                                                {post.title}
+                                            </h3>
+                                            <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
+                                        </div>
                                     </div>
                                     <Button bgColor="bg-rose-500" onClick={() => deletePost(post.$id, post.featuredimage)}>
                                         Delete

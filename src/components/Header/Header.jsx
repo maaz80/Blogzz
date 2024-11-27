@@ -38,7 +38,7 @@ function Header() {
   userData()
 
   return (
-    <header className="py-2 w-full px-4 shadow bg-rose-800/20 md:bg-rose-800/10 rounded-b-md text-gray-600 z-50 ml-3">
+    <header className="py-2 w-full px-4 shadow bg-rose-800/20 md:bg-rose-800/20 rounded-b-md text-gray-600 z-50 ">
       <Container>
         <nav className="flex items-center justify-between">
           <div><Logo width={'w-14 md:w-20'} height={'h-8 md:h-12'} /></div>

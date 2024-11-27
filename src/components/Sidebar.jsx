@@ -48,7 +48,7 @@ const Sidebar = () => {
     return (
         <div
             className={`fixed top-0 left-0 h-screen ${
-          isExpanded ? 'w-52' : 'w-[12%]' 
+          isExpanded ? 'w-48' : 'w-12' 
             } bg-rose-700 transition-all duration-300 rounded-r-3xl flex flex-col items-center z-40`}
         >
             {/* Logo Section */}

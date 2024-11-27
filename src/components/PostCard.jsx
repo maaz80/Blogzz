@@ -7,9 +7,23 @@ import { FaHeart } from 'react-icons/fa'
 function PostCard({ $id, title, featuredimage, $createdAt, UserName, likes }) {
   const [userEmail, setuserEmail] = useState('')
   const [isLiked, setIsLiked] = useState(false)
-  const createdDate = $createdAt.slice(0, 10)
+  const [createdDays, setCreatedDays] = useState('Today')
   const navigate = useNavigate()
   const [likesCount, setLikesCount] = useState(likes.length )
+
+useEffect(() => {
+const createdDate = new Date($createdAt);
+const currentDate = new Date();
+const timeDifference = currentDate - createdDate;
+const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+if (daysDifference === 0) {
+  setCreatedDays('Today');
+} else if (daysDifference === 1) {
+  setCreatedDays('Yesterday');
+} else {
+  setCreatedDays(`${daysDifference} days ago`);
+}
+},[createdDays])
 
   // Geting current user 
   useEffect(() => {
@@ -51,9 +65,9 @@ function PostCard({ $id, title, featuredimage, $createdAt, UserName, likes }) {
   }
 
   return (
-    <div className='w-[300px] md:w-[345px] m-auto md:m-0  rounded-xl p-2 h-80 shadow-md shadow-gray-400' onClick={handlePostOpen}>
-      <div className='w-full justify-center mb-4'>
-        <img src={appwriteService.getFilePreview(featuredimage)} alt={title} className='rounded-xl h-52 w-[100%] object-cover' />
+    <div className='w-[300px] md:w-[305px] m-auto md:m-0  rounded-xl p-2 h-80 shadow-md shadow-gray-400 ' onClick={handlePostOpen}>
+      <div className='w-[280px] md:w-[285px] mx-auto justify-center mb-4 overflow-hidden rounded-xl hover:shadow-sm hover:shadow-gray-400'>
+        <img src={appwriteService.getFilePreview(featuredimage)} alt={title} className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale ' />
       </div>
       <div className='flex justify-between items-center'>
         <h2 className='text-rose-700'>{UserName}</h2>
@@ -65,7 +79,7 @@ function PostCard({ $id, title, featuredimage, $createdAt, UserName, likes }) {
         </div>
       </div>
       <h2 className='text-xl font-bold text-rose-600'>{title}</h2>
-      <p className='text-rose-600 text-sm'>{createdDate}</p>
+      <p className='text-rose-600 text-sm'>{createdDays}</p>
     </div>
   )
 }

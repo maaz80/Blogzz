@@ -87,6 +87,19 @@ const Profile = () => {
         });
     }, [allPosts]);
 
+    // Delete post Function
+    const deletePost = (postId, featuredImage) => {
+        appwriteService.DeletePost(postId).then((status) => {
+            if (status) {
+                appwriteService.deleteFile(featuredImage);
+                setIsPopup(true);
+                setAllPosts(prevPosts => prevPosts.filter(post => post.$id !== postId));
+                setTimeout(() => {
+                    setIsPopup(false);
+                }, 1000);
+            }
+        });
+    };
 
     const handleUpdatePass = async (data) => {
         try {
@@ -136,13 +149,13 @@ const Profile = () => {
     if (userPosts.length === 0) {
         return (
             <div className="w-full py-8 mt-[50%] md:mt-[8%] text-center">
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full h-screen mt-[10%]">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
-                                <BeatLoader/>
-                            </h1>
-                        </div>
+                <div className="flex flex-wrap">
+                    <div className="p-2 w-full h-screen mt-[10%]">
+                        <h1 className="text-2xl font-bold hover:text-gray-500">
+                            <BeatLoader />
+                        </h1>
                     </div>
+                </div>
             </div>
         )
     }
@@ -204,21 +217,26 @@ const Profile = () => {
                                 <div
                                     key={post.$id}
                                     onClick={handlePostOpen}
-                                    className="flex items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow mb-1"
+                                    className="flex items-center justify-between gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow mb-1"
                                 >
-                                    {/* Post Image */}
-                                    <img
-                                        src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
-                                        alt={post.title}
-                                        className="w-12 h-12 rounded-md object-cover"
-                                    />
-                                    {/* Post Details */}
-                                    <div>
-                                        <h3 className="text-sm font-semibold text-gray-800">
-                                            {post.title}
-                                        </h3>
-                                        <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
+                                    <div className="flex item-center  gap-3">
+                                        {/* Post Image */}
+                                        <img
+                                            src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
+                                            alt={post.title}
+                                            className="w-12 h-12 rounded-md object-cover"
+                                        />
+                                        {/* Post Details */}
+                                        <div className='mt-1'>
+                                            <h3 className="text-sm font-semibold text-gray-800">
+                                                {post.title}
+                                            </h3>
+                                            <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
+                                        </div>
                                     </div>
+                                    <Button bgColor="bg-rose-500" onClick={() => deletePost(post.$id, post.featuredimage)}>
+                                        Delete
+                                    </Button>
                                 </div>
                             ))
                         ) : (
