@@ -18,6 +18,13 @@ function Post() {
     const { slug } = useParams();
     const navigate = useNavigate();
 
+useEffect(()=>{
+window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+});
+},[])
+
     // Fetching User
     useEffect(() => {
         const fetchUserData = async () => {
@@ -154,7 +161,7 @@ function Post() {
                     <div className="mb-6 font-semibold">Date: {createdAt}</div>
                     <div className="mb-6 font-semibold">Liked by {post.likes.length} people</div>
                     <div className="mb-6 font-semibold">Status: {post.status}</div>
-                    <div className="browser-css h-52 overflow-y-scroll">{parse(post.content)}</div>
+                    <div className="browser-css h-52 w-full overflow-y-scroll">{parse(post.content)}</div>
                 </div>
             </div>
             <div className="mt-6 mx-2">

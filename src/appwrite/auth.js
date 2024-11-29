@@ -40,10 +40,15 @@ export class AuthService {
             const user = await this.account.get();
             return user;
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
+            if (error.code === 401) {
+                console.log("No authenticated user. User is a guest.");
+                return null; 
+            }
+            console.error("Appwrite service :: getCurrentUser :: error", error);
             return null;
         }
     }
+    
 
     async updateName(name) {
         try {

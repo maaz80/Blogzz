@@ -42,7 +42,7 @@ const Sidebar = () => {
         }
     }, [authStatus])
     const SideItem = [
-        { name: 'Home', slug: '/', icon: <FaHome />, active: authStatus },
+        { name: 'Home', slug: '/', icon: <FaHome />, active: true },
         { name: 'All Posts', slug: '/all-posts', icon: <FaList />, active: authStatus },
         { name: 'Add Post', slug: '/add-post', icon: <FaPlus />, active: authStatus },
         { name: 'Login', slug: '/login', icon: <FaSignInAlt />, active: !authStatus },

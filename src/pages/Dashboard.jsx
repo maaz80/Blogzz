@@ -61,7 +61,8 @@ const Dashboard = () => {
     }, []);
 
     // Delete post Function
-    const deletePost = (postId, featuredImage) => {
+    const deletePost = (postId, featuredImage, e) => {
+        e.stopPropagation()
         appwriteService.DeletePost(postId).then((status) => {
             if (status) {
                 appwriteService.deleteFile(featuredImage);
@@ -99,6 +100,11 @@ const Dashboard = () => {
             }
         });
     }, [allPosts]);
+
+    const handlePostOpen = (e, $id) => {
+        e.stopPropagation()
+        navigate(`/post/${$id}`)
+    }
 
     if (!currentUser) {
         return (
@@ -193,6 +199,7 @@ const Dashboard = () => {
                             allPosts.slice(0, 5).map((post) => (
                                 <div
                                     key={post.$id}
+                                    onClick={(e) => handlePostOpen(e, post.$id)}
                                     className="flex justify-between items-center gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow"
                                 >
                                     <div className="flex item-center gap-4">

@@ -18,7 +18,7 @@ function Header() {
     {
       name: 'Home',
       slug: "/",
-      active: authStatus,
+      active: true,
     }
   ];
 

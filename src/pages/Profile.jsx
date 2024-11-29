@@ -88,7 +88,8 @@ const Profile = () => {
     }, [allPosts]);
 
     // Delete post Function
-    const deletePost = (postId, featuredImage) => {
+    const deletePost = (postId, featuredImage,e) => {
+        e.stopPropagation();
         appwriteService.DeletePost(postId).then((status) => {
             if (status) {
                 appwriteService.deleteFile(featuredImage);
@@ -141,9 +142,9 @@ const Profile = () => {
         setUserEmailEditable(!userEmailEditable)
     }
 
-    const handlePostOpen = (e) => {
+    const handlePostOpen = (e,$id) => {
         e.stopPropagation()
-        navigate(`/post/${userPosts[0].$id}`)
+        navigate(`/post/${$id}`)
     }
 
     if (!userLabel) {
@@ -216,7 +217,7 @@ const Profile = () => {
                             userPosts.slice(0, 5).map((post) => (
                                 <div
                                     key={post.$id}
-                                    onClick={handlePostOpen}
+                                    onClick={(e)=>handlePostOpen(e,post.$id)}
                                     className="flex items-center justify-between gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow mb-1"
                                 >
                                     <div className="flex item-center  gap-3">
