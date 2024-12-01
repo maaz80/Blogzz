@@ -20,7 +20,7 @@ export class Service {
 
     }
 
-    async createFeedback({username,initials,feedback,rating}){
+    async createFeedback({ username, feedback, rating }) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -28,7 +28,6 @@ export class Service {
                 ID.unique(),
                 {
                     username,
-                    initials,
                     feedback,
                     rating
                 }
@@ -38,15 +37,59 @@ export class Service {
         }
     }
 
-    async getFeedback(){
+    async getFeedbacks() {
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteFeedbackCollectionId,
             )
         } catch (error) {
-            console.log('Error getting feedback' +error);
-            
+            console.log('Error getting feedback' + error);
+
+        }
+    }
+
+    async GetFeedback(slug) {
+        try {
+            return await this.databases.getDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug
+            )
+        } catch (error) {
+            console.log('Get Post' + error);
+            return false;
+        }
+    }
+
+    async UpdateFeedback(slug,{feedback, rating}) {
+        try {
+            return await this.databases.updateDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteFeedbackCollectionId,
+                slug,
+                {
+                    feedback,
+                    rating
+                }
+            )
+        } catch (error) {
+            console.log('Update Feedback' + error);
+
+        }
+    }
+
+    async DeleteFeedback(slug) {
+        try {
+            await this.databases.deleteDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteFeedbackCollectionId,
+                slug
+            )
+            return true;
+        } catch (error) {
+            console.log('Delete Feedback' + error);
+            return false;
         }
     }
 

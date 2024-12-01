@@ -5,7 +5,7 @@ const FeedbackForm = () => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [username, setUsername] = useState(""); // Example for username input
+  const [username, setUsername] = useState("");
 
 const getUser = ()=>{
   authService.getCurrentUser().then((userData)=>{
@@ -18,11 +18,7 @@ getUser()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const initials = username
-      .split(" ")
-      .map((name) => name.charAt(0).toUpperCase())
-      .join("");
-    const feedbackData = { username, initials, feedback: comment, rating };
+    const feedbackData = { username, feedback: comment, rating };
 
     try {
       const response = await appwriteService.createFeedback(feedbackData);

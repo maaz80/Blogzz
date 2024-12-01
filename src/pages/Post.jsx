@@ -44,7 +44,6 @@ function Post() {
             appwriteService.GetPost(slug).then((fetchedPost) => {
                 if (fetchedPost) {
                     setPost(fetchedPost);
-                    console.log(fetchedPost);
 
                     setComments(fetchedPost.comments || []); // Initialize comments
                     setCreatedAt(fetchedPost.$createdAt.slice(0, 10));
@@ -108,7 +107,6 @@ function Post() {
         const updatedComments = [...comments, `${userData.name}: ${comment}`];
         const response = await appwriteService.updatePostComments(slug, updatedComments);
 
-        console.log(updatedComments);
         if (response) {
             setComments(updatedComments);
             setComment(''); // Clear the comment box

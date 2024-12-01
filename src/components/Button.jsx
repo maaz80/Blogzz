@@ -3,7 +3,7 @@ import React from 'react';
 const Button = ({
     children,
     type = 'button', // Default to 'button' to prevent form submission
-    bgColor = 'bg-blue-600',
+    bgColor = 'bg-rose-600',
     textColor = 'text-white',
     className = '',
     ...props

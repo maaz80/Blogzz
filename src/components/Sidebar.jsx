@@ -5,6 +5,7 @@ import { FaHome, FaPlus, FaSignInAlt, FaUserPlus, FaThLarge, FaList } from 'reac
 import { IoMdPerson } from 'react-icons/io';
 import { useSelector } from 'react-redux';
 import authService from '../appwrite/auth';
+import { MdFeedback } from "react-icons/md";
 
 const Sidebar = () => {
     const authStatus = useSelector((state) => state.auth.status)
@@ -49,7 +50,7 @@ const Sidebar = () => {
         { name: 'SignUp', slug: '/signup', icon: <FaUserPlus />, active: !authStatus },
         { name: 'Dashboard', slug: '/dashboard', icon: <FaThLarge />, active: isAdmin },
         { name: 'Profile', slug: '/profile', icon: <IoMdPerson />, active: authStatus },
-        { name: 'Feedbacks', slug: '/feedback', icon: <IoMdPerson />, active: authStatus },
+        { name: 'Feedbacks', slug: '/feedback', icon: <MdFeedback />, active: authStatus },
     ];
 
     const toggleSidebar = () => {

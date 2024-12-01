@@ -11,7 +11,6 @@ function AllPosts() {
     useEffect(() => {
         appwriteService.GetPosts().then((posts) => {
             if (posts) {
-                console.log(posts);
                 const sortedPosts = posts.documents.sort((a, b) => {
                     return new Date(b.$createdAt) - new Date(a.$createdAt);
                 });

@@ -28,7 +28,7 @@ function Signup() {
 
     return (
         <div className="flex items-center justify-center h-screen -mt-16">
-            <div className={`mx-auto w-full max-w-md bg-white backdrop-blur-lg rounded-xl p-10 border border-gray-200 shadow-xl`}>
+            <div className={`mx-auto w-full max-w-md bg-white backdrop-blur-lg rounded-xl p-3 md:p-10 border border-gray-200 shadow-xl`}>
                 <div className="mb-2 flex justify-center">
                 </div>
                 <h2 className="text-center text-2xl font-bold leading-tight mb-5 ">Sign up to create account</h2>
@@ -50,6 +50,8 @@ function Signup() {
                             placeholder="Enter your full name"
                             {...register("name", {
                                 required: true,
+                                minLength:10,
+                                maxLength:15
                             })}
                         />
                         <Input
@@ -70,6 +72,7 @@ function Signup() {
                             placeholder="Enter your password"
                             {...register("password", {
                                 required: true,
+                                minLength:6
                             })}
                         />
                         <Button

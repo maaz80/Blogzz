@@ -28,8 +28,6 @@ const Profile = () => {
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
             if (allposts) {
-                console.log('Total Posts:', allposts.documents.length);
-
                 // Reversing post for showing recent posts 
                 const reversePost = allposts.documents
                     .slice()
@@ -42,7 +40,6 @@ const Profile = () => {
     useEffect(() => {
         authService.getCurrentUser().then((userData) => {
             if (userData) {
-                console.log('User ID:', userData.$id);
                 setCurrentUser(userData.name);
                 setCurrentUserEmail(userData.email);
 
@@ -51,7 +48,6 @@ const Profile = () => {
                 } else {
                     setUserLabel('User')
                 }
-                console.log(userData);
 
                 // Filter posts belonging to the current user
                 if (allPosts.length > 0) {
@@ -201,7 +197,7 @@ const Profile = () => {
                     </div>
 
                     {/* Recent Posts  */}
-                    <div className="relative w-[99%] h-[340px] overflow-y-scroll rounded-md shadow-lg bg-gradient-to-r from-rose-200 to-rose-300 border border-gray-200 p-4 ">
+                    <div className="relative w-[99%] h-[340px] overflow-y-scroll rounded-md shadow-lg bg-gradient-to-r from-rose-200 to-rose-300 border border-gray-200 p-2 md:p-4 ">
                         {/* Header Section */}
                         <div className="flex justify-between items-center bg-gray-50 p-2 rounded-md shadow-sm mb-1">
                             <h2 className="text-lg font-bold text-gray-700">Recent Blogs</h2>
@@ -218,7 +214,7 @@ const Profile = () => {
                                 <div
                                     key={post.$id}
                                     onClick={(e) => handlePostOpen(e, post.$id)}
-                                    className="flex items-center justify-between gap-4 bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow mb-1"
+                                    className="flex items-center justify-between gap-4 bg-white p-1 md:p-3 rounded-md shadow-sm hover:shadow-md transition-shadow mb-1"
                                 >
                                     <div className="flex item-center  gap-3">
                                         {/* Post Image */}
@@ -229,13 +225,13 @@ const Profile = () => {
                                         />
                                         {/* Post Details */}
                                         <div className='mt-1'>
-                                            <h3 className="text-sm font-semibold text-gray-800">
+                                            <h3 className="text-xs md:text-sm font-semibold text-gray-800">
                                                 {post.title}
                                             </h3>
-                                            <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
+                                            <p className="text-[10px] md:text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
                                         </div>
                                     </div>
-                                    <Button bgColor="bg-rose-500 hover:bg-rose-600" onClick={() => deletePost(post.$id, post.featuredimage)}>
+                                    <Button bgColor="bg-rose-500 hover:bg-rose-600 px-1 md:px-4 text-xs md:text-base" onClick={() => deletePost(post.$id, post.featuredimage)}>
                                         Delete
                                     </Button>
                                 </div>

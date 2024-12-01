@@ -30,14 +30,12 @@ const Dashboard = () => {
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
             if (allposts) {
-                console.log('Total Posts:', allposts.documents.length);
 
                 // Remove duplicates by UserName
                 const uniquePosts = allposts.documents.filter((post, index, self) =>
                     index === self.findIndex((p) => p.UserName === post.UserName)
                 );
 
-                console.log('Unique Users:', uniquePosts.map(post => post.UserName).join(', '));
                 setPosts(uniquePosts);
 
                 // Reversing post for showing recent posts 
@@ -78,9 +76,6 @@ const Dashboard = () => {
     useEffect(() => {
         authService.getCurrentUser().then((userData) => {
             if (userData) {
-                console.log('User Labels:', userData.labels);
-                console.log('User ID:', userData.$id);
-                console.log('User Name:', userData.name);
 
                 setCurrentUser(userData.name);
 
@@ -211,13 +206,13 @@ const Dashboard = () => {
                                         />
                                         {/* Post Details */}
                                         <div className='mt-1'>
-                                            <h3 className="text-sm font-semibold text-gray-800">
+                                            <h3 className="text-xs md:text-sm font-semibold text-gray-800">
                                                 {post.title}
                                             </h3>
-                                            <p className="text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
+                                            <p className="text-[10px] md:text-xs text-gray-500"><span className='font-semibold'>By:</span> {post.UserName}</p>
                                         </div>
                                     </div>
-                                    <Button bgColor="bg-rose-500 hover:bg-rose-600" onClick={() => deletePost(post.$id, post.featuredimage)}>
+                                    <Button bgColor="bg-rose-500 hover:bg-rose-600 px-1 md:px-4 text-xs md:text-base" onClick={() => deletePost(post.$id, post.featuredimage)}>
                                         Delete
                                     </Button>
                                 </div>

@@ -43,7 +43,6 @@ export default function PostForm({ post }) {
     }, [currentUserData, setValue]);
 
     const submit = async (data) => {
-        console.log(data);
 
         if (!data.userid) {
             data.userid = `user-${Math.floor(Math.random() * 1000000)}`;

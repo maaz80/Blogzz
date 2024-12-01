@@ -18,7 +18,6 @@ function Login() {
             const session = await authService.login(data)
             if (session) {
                 const userData = await authService.getCurrentUser()
-                console.log(userData);
                 
                 if (userData) dispatch(authLogin(userData));
                 navigate("/")
@@ -30,7 +29,7 @@ function Login() {
 
     return (
         <div className='flex items-center justify-center min-h-screen -mt-10'>
-            <div className={`mx-auto w-full max-w-md bg-white backdrop-blur-lg rounded-xl p-10 border border-gray-200 shadow-xl`}>
+            <div className={`mx-auto w-full max-w-md bg-white backdrop-blur-lg rounded-xl p-3 md:p-10 border border-gray-200 shadow-xl`}>
                 <div className="flex justify-center">
                 </div>
                 <h2 className="text-center text-3xl font-semibold leading-tight text-gray-800 mb-4">Sign in to your account</h2>
@@ -80,7 +79,7 @@ function Login() {
                     </Button>
                 </form>
 
-                <p className="text-center mt-6 text-gray-500 text-sm">
+                <p className="text-center mt-1 text-gray-500 text-xs md:text-sm">
                     By signing in, you agree to our <Link to="/terms" className="text-blue-500 hover:text-blue-700 underline">Terms & Conditions</Link>.
                 </p>
             </div>
