@@ -14,7 +14,7 @@ const LogoutBtn = ({ classes }) => {
             setIsPopup(true)
             setTimeout(() => {
                 setIsPopup(false)
-                navigate('/login')
+                navigate('/')
                 dispatch(logout())
                 window.location.reload()
             }, 1000);
