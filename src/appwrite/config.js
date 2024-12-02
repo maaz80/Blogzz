@@ -24,7 +24,7 @@ export class Service {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackId,
+                '674c4533002e7d687b96',
                 ID.unique(),
                 {
                     username,
@@ -54,7 +54,7 @@ export class Service {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackId,
+                '674c4533002e7d687b96',
                 slug
             )
         } catch (error) {
@@ -67,7 +67,7 @@ export class Service {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackId,
+                '674c4533002e7d687b96',
                 slug,
                 {
                     feedback,
@@ -84,7 +84,7 @@ export class Service {
         try {
             await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackId,
+                '674c4533002e7d687b96',
                 slug
             )
             return true;

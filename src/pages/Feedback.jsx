@@ -41,27 +41,41 @@ function Feedback() {
     const feedbackData = { username, feedback: data.comment, rating };
 
     try {
-      if (editFeedback) {
-        // For editing, update feedback
-        await appwriteService.UpdateFeedback(editFeedback.$id, { feedback: data.comment, rating });
-        setFeedbacks(feedbacks.map(feed => feed.$id === editFeedback.$id ? { ...feed, feedback: data.comment, rating } : feed));
-        setEditFeedback(null); 
-      } else {
-        // If new feedback, create feedback
-        const response = await appwriteService.createFeedback(feedbackData);
-        setFeedbacks([...feedbacks, response]);
-      }
+        if (editFeedback) {
+            // For editing, update feedback
+            await appwriteService.UpdateFeedback(editFeedback.$id, {
+                feedback: data.comment,
+                rating,
+            });
+            setFeedbacks(feedbacks.map(feed =>
+                feed.$id === editFeedback.$id
+                    ? { ...feed, feedback: data.comment, rating }
+                    : feed
+            ));
+            setEditFeedback(null);
+        } else {
+            // If new feedback, create feedback
+            const response = await appwriteService.createFeedback(feedbackData);
 
-      setRating(0);
-      reset(); 
-      setIsPopup(true);
-      setTimeout(() => {
-        setIsPopup(false);
-      }, 1000);
+            // Ensure `response` is valid before updating state
+            if (response) {
+                setFeedbacks([...feedbacks, response]);
+            } else {
+                console.error("Failed to create feedback.");
+            }
+        }
+
+        setRating(0);
+        reset();
+        setIsPopup(true);
+        setTimeout(() => {
+            setIsPopup(false);
+        }, 1000);
     } catch (error) {
-      console.log("Error submitting feedback: ", error);
+        console.log("Error submitting feedback: ", error);
     }
-  };
+};
+
 
   const handleCross = () => {
     setIsForm(false);
@@ -124,7 +138,7 @@ function Feedback() {
       }
     });
   }, []);
-  
+
   // Delete feedback function
   const deleteFeedback = async (feedbackId) => {
     try {
