@@ -39,10 +39,9 @@ export class Service {
 
     async getFeedbacks(queries = []) {
         try {
-            console.log(import.meta.env.VITE_APPWRITE_FEEDBACK_ID)
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                String(import.meta.env.VITE_APPWRITE_FEEDBACK_ID),
+                '674c4533002e7d687b96',
                 queries
             )
         } catch (error) {
