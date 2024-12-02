@@ -77,7 +77,7 @@ function Header() {
                       navigate(item.slug);
                       setIsMenuOpen(false);
                     }}
-                    className="inline-block w-[100%] md:w-32 px-6 py-2 duration-800 hover:bg-rose-200 md:hover:bg-rose-600/20 rounded-none md:rounded-full border-b md:border-none"
+                    className="inline-block w-[100%] md:w-32 px-6 py-2 duration-800 hover:text-rose-800 hover:scale-110 transition-all duration-200 rounded-none md:rounded-full border-b md:border-none"
                   >
                     {item.name}
                   </button>

@@ -8,24 +8,24 @@ import Comments from '../components/images/Comments.png'
 import { Link, useNavigate } from 'react-router-dom';
 import AddPost from './AddPost';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend ,Filler} from 'chart.js';
 import Button from '../components/Button';
 import Popup from '../components/Popup';
 import { BeatLoader } from 'react-spinners';
 
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend,Filler);
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
-    const [userPosts, setUserPosts] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [postCounts, setPostCounts] = useState({ labels: [], data: [] });
     const [totalLikes, setTotalLikes] = useState('0')
     const [totalComments, setTotalComments] = useState('0')
     const [isPopup, setIsPopup] = useState(false);
+    const [feedbacks, setFeedbacks] = useState([])
 
     useEffect(() => {
         appwriteService.GetPosts().then((allposts) => {
@@ -87,11 +87,16 @@ const Dashboard = () => {
                     const totalComments = allPosts.reduce((total, post) => total + post.comments.length, 0)
                     setTotalComments(totalComments);
 
-                    const filteredPosts = allPosts.filter(
-                        (post) => post.UserName === userData.name
-                    );
-                    setUserPosts(filteredPosts);
                 }
+            }
+        });
+    }, [allPosts]);
+
+    // Feedbacks 
+    useEffect(() => {
+        appwriteService.getFeedbacks().then((feedback) => {
+            if (feedback) {
+                setFeedbacks(feedback.documents);
             }
         });
     }, [allPosts]);
@@ -126,8 +131,8 @@ const Dashboard = () => {
                     <div className="text-xl font-semibold text-gray-700">{currentUser}</div>
                     <div className="text-sm font-medium text-gray-500">Owner/Admin</div>
                     <div className="mt-4">
-                        <div className="text-lg font-bold text-rose-600">{userPosts.length}</div>
-                        <div className="text-sm font-medium text-gray-600">Your Posts</div>
+                        <div className="text-lg font-bold text-rose-600">{feedbacks.length}</div>
+                        <div className="text-sm font-medium text-gray-600">Total Feedbacks</div>
                     </div>
                     <div className="mt-2">
                         <div className="text-lg font-bold text-rose-600">{totalLikes}</div>

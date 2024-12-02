@@ -15,12 +15,11 @@ function Feedback() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [filterRating, setFilterRating] = useState(null);
   const [isPopup, setIsPopup] = useState(false);
-  const [editFeedback, setEditFeedback] = useState(null); // Store feedback being edited
-  const [isAuthor, setIsAuthor] = useState(false)
+  const [isDelete, setIsDelete] = useState(false);
+  const [editFeedback, setEditFeedback] = useState(null); 
   const [userData, setUserData] = useState(null)
+  const [isAuthor, setIsAuthor] = useState(false)
   const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm();
-
-  const watchComment = watch("comment", "");
 
   // Fetch feedback list
   useEffect(() => {
@@ -31,12 +30,11 @@ function Feedback() {
     });
   }, []);
 
+  // Getting user data 
   const getUser = () => {
     authService.getCurrentUser().then((userData) => {
       if (userData) {
         setUsername(userData.name);
-        console.log(userData);
-        
       }
     });
   };
@@ -51,10 +49,10 @@ function Feedback() {
 
     try {
       if (editFeedback) {
-        // If editing, update feedback
+        // For editing, update feedback
         await appwriteService.UpdateFeedback(editFeedback.$id, { feedback: data.comment, rating });
         setFeedbacks(feedbacks.map(feed => feed.$id === editFeedback.$id ? { ...feed, feedback: data.comment, rating } : feed));
-        setEditFeedback(null); // Reset edit state
+        setEditFeedback(null); 
       } else {
         // If new feedback, create feedback
         const response = await appwriteService.createFeedback(feedbackData);
@@ -62,7 +60,7 @@ function Feedback() {
       }
 
       setRating(0);
-      reset(); // Reset form fields
+      reset(); 
       setIsPopup(true);
       setTimeout(() => {
         setIsPopup(false);
@@ -110,32 +108,17 @@ function Feedback() {
     fetchUserData();
   }, []);
 
-  // useEffect(() => {
-  //   if (feedbacks && userData) {
-  //     if (userData.labels && userData.labels.includes('admin')) {
-  //       setIsAuthor(true);
-  //       return;
-  //     }
-  
-  //     // Flatten permissions into a single array of strings
-  //     const permissionStrings = feedbacks
-  //       .map(feedback => feedback.$permissions)
-  //       .flat(); // Flatten the nested array
-  
-  //     // Find if any permission matches the current user ID
-  //     const isUserAuthorized = permissionStrings.some(permission => {
-  //       const match = permission.match(/user:([a-zA-Z0-9-]+)/);
-  //       console.log(match[1]);
-        
-  //       return match && match[1] === userData.$id;
-  //     });
-  
-  //     setIsAuthor(isUserAuthorized);
-  //   } else {
-  //     setIsAuthor(false);
-  //   }
-  // }, [feedbacks, userData]);
-  
+  // Checking if user is admin
+  useEffect(() => {
+    if (feedbacks && userData) {
+      if (userData.labels && userData.labels.includes('admin')) {
+        setIsAuthor(true);
+      }
+    } else {
+      setIsAuthor(false);
+    }
+  }, [feedbacks, userData]);
+
   // Delete feedback function
   const deleteFeedback = async (feedbackId) => {
     try {
@@ -143,9 +126,9 @@ function Feedback() {
       if (status) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
         setFeedbacks(feedbacks.filter((feed) => feed.$id !== feedbackId));
-        setIsPopup(true);
+        setIsDelete(true);
         setTimeout(() => {
-          setIsPopup(false);
+          setIsDelete(false);
         }, 1000);
       }
     } catch (error) {
@@ -157,8 +140,8 @@ function Feedback() {
   const editFeedbackHandler = (feedback) => {
     setEditFeedback(feedback);
     setRating(feedback.rating);
-    setValue("comment", feedback.feedback); // Pre-fill form fields with current feedback
-    setIsForm(true); // Show form for editing
+    setValue("comment", feedback.feedback); 
+    setIsForm(true);
   };
 
   if (feedbacks.length === 0) {
@@ -178,7 +161,9 @@ function Feedback() {
   return (
     <div className="min-h-screen p-2 md:p-4 w-full">
       <div className="flex justify-between item-end md:items-center flex-col md:flex-row w-full">
-        {isPopup && <Popup children={'Feedback Submitted!'} />}
+        {isPopup && <Popup children={'Feedback Updated!'} />}
+        {isDelete && <Popup children={'Feedback Deleted!'} />}
+
         {/* Filters */}
         <div className="flex justify-center mb-2 md:mb-6 space-x-1 md:space-x-4">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -217,25 +202,26 @@ function Feedback() {
               <h3 className="text-lg font-bold mb-2">{feed.username}</h3>
               <div className="mb-4">{renderStars(feed.rating)}</div>
               <p className="text-gray-600 text-center">{feed.feedback}</p>
-              {isAuthor && (
-                <div>
-                  {/* Edit Button */}
-                  <Button
-                    onClick={() => editFeedbackHandler(feed)}
-                    className="mt-2  absolute top-3 right-3 w-20"
-                    bgColor='bg-rose-500'
-                  >
-                    Edit
-                  </Button>
-                  {/* Delete Button */}
-                  <Button
-                    onClick={() => deleteFeedback(feed.$id)}
-                    className="mt-2  absolute top-12 right-3 w-20"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              )}
+              {(feed.$permissions.some(permission => {
+                const match = permission.match(/user:([a-zA-Z0-9-]+)/);
+                return match && match[1] === userData?.$id;
+              }) || isAuthor) && (
+                  <div>
+                    <Button
+                      onClick={() => editFeedbackHandler(feed)}
+                      className="mt-2 absolute top-1 right-3 w-14 text-sm flex justify-center items-center"
+                      bgColor="bg-rose-500"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => deleteFeedback(feed.$id)}
+                      className="mt-2 absolute top-9 right-3 w-14 text-sm flex justify-center items-center"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
             </div>
           ))
         )}

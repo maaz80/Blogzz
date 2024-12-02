@@ -174,14 +174,14 @@ const Profile = () => {
                                 <div className="text-sm font-medium text-gray-600">Total Posts</div>
                             </div>
                             <div className="mt-4">
-                                <div className="text-lg font-bold text-rose-600">{userComments ? userComments : <BeatLoader size={10} />}</div>
+                                <div className="text-lg font-bold text-rose-600">{userComments ? userComments : <div>0</div> }</div>
                                 <div className="text-sm font-medium text-gray-600">Comments</div>
                             </div>
                         </div>
 
                         <div className='flex items-center gap-5 md:gap-10'>
                             <div className="mt-2">
-                                <div className="text-lg font-bold text-rose-600">{userLikes ? userLikes : <BeatLoader size={10} />}</div>
+                                <div className="text-lg font-bold text-rose-600">{userLikes ? userLikes : <div>0</div>}</div>
                                 <div className="text-sm font-medium text-gray-600">Total Likes</div>
                             </div>
                             <div className="mt-2">

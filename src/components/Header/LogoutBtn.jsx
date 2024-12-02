@@ -24,7 +24,7 @@ const LogoutBtn = ({ classes }) => {
     return (<>
         {isPopup && <Popup children={'Logout Succesfull!!!'} />}
 
-        <button className={`inline-bock px-7 py-2 duration-200 hover:bg-rose-200 md:hover:bg-rose-600/20 rounded-b-md md:rounded-full w-full ${classes}`} onClick={logoutHandler}>Logout</button>
+        <button className={`inline-bock px-7 py-2  hover:text-rose-800 hover:scale-110 transition-all duration-200 rounded-b-md md:rounded-full w-full ${classes}`} onClick={logoutHandler}>Logout</button>
     </>
     )
 }

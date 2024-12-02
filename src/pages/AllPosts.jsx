@@ -51,7 +51,7 @@ function AllPosts() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="border rounded-md w-[100%] md:w-[40%] px-4 py-2 focus:outline-none focus:ring-1 focus:ring-rose-300"
                 />
-                <div className='flex justify-between items-center w-full md:w-auto gap-2'>
+                <div className='flex justify-between items-center w-full mr-1 md:mr-0 md:w-auto gap-2'>
                     <Button onClick={handleMostLikedPosts} bgColor='bg-rose-700 hover:bg-rose-500 duration-400 transition-all'>Most Liked</Button>
                     <Button onClick={handleAdminPosts} bgColor='bg-rose-700 hover:bg-rose-500 duration-400 transition-all'>Admin Posts</Button>
                 </div>
