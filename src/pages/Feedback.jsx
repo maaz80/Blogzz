@@ -16,12 +16,12 @@ function Feedback() {
   const [filterRating, setFilterRating] = useState(null);
   const [isPopup, setIsPopup] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const [editFeedback, setEditFeedback] = useState(null); 
+  const [editFeedback, setEditFeedback] = useState(null);
   const [userData, setUserData] = useState(null)
   const [isAuthor, setIsAuthor] = useState(false)
   const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm();
 
- 
+
 
   // Getting user data 
   const getUser = () => {
@@ -41,40 +41,40 @@ function Feedback() {
     const feedbackData = { username, feedback: data.comment, rating };
 
     try {
-        if (editFeedback) {
-            // For editing, update feedback
-            await appwriteService.UpdateFeedback(editFeedback.$id, {
-                feedback: data.comment,
-                rating,
-            });
-            setFeedbacks(feedbacks.map(feed =>
-                feed.$id === editFeedback.$id
-                    ? { ...feed, feedback: data.comment, rating }
-                    : feed
-            ));
-            setEditFeedback(null);
+      if (editFeedback) {
+        // For editing, update feedback
+        await appwriteService.UpdateFeedback(editFeedback.$id, {
+          feedback: data.comment,
+          rating,
+        });
+        setFeedbacks(feedbacks.map(feed =>
+          feed.$id === editFeedback.$id
+            ? { ...feed, feedback: data.comment, rating }
+            : feed
+        ));
+        setEditFeedback(null);
+      } else {
+        // If new feedback, create feedback
+        const response = await appwriteService.createFeedback(feedbackData);
+
+        // Ensure `response` is valid before updating state
+        if (response) {
+          setFeedbacks([...feedbacks, response]);
         } else {
-            // If new feedback, create feedback
-            const response = await appwriteService.createFeedback(feedbackData);
-
-            // Ensure `response` is valid before updating state
-            if (response) {
-                setFeedbacks([...feedbacks, response]);
-            } else {
-                console.error("Failed to create feedback.");
-            }
+          console.error("Failed to create feedback.");
         }
+      }
 
-        setRating(0);
-        reset();
-        setIsPopup(true);
-        setTimeout(() => {
-            setIsPopup(false);
-        }, 1000);
+      setRating(0);
+      reset();
+      setIsPopup(true);
+      setTimeout(() => {
+        setIsPopup(false);
+      }, 1000);
     } catch (error) {
-        console.log("Error submitting feedback: ", error);
+      console.log("Error submitting feedback: ", error);
     }
-};
+  };
 
 
   const handleCross = () => {
@@ -127,14 +127,14 @@ function Feedback() {
   }, [feedbacks, userData]);
 
 
-   // Fetch feedback list
-   useEffect(() => {
+  // Fetch feedback list
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     appwriteService.getFeedbacks().then((feedback) => {
       if (feedback) {
         setFeedbacks(feedback.documents);
         console.log(feedback.documents);
-        
+
       }
     });
   }, []);
@@ -160,7 +160,7 @@ function Feedback() {
   const editFeedbackHandler = (feedback) => {
     setEditFeedback(feedback);
     setRating(feedback.rating);
-    setValue("comment", feedback.feedback); 
+    setValue("comment", feedback.feedback);
     setIsForm(true);
   };
 
@@ -214,10 +214,15 @@ function Feedback() {
               className="p-6 bg-white rounded shadow-md border flex flex-col items-center relative"
             >
               <div className="w-16 h-16 bg-rose-500 text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
-                {feed.username
-                  .split(" ")
-                  .map((word) => word[0].toUpperCase())
-                  .join("")}
+                {
+                  feed.username
+                    ? feed.username
+                      .split(" ")
+                      .map((word) => word[0]?.toUpperCase() || "")
+                      .join("")
+                    : "NA" // Default value if username is undefined or null
+                }
+
               </div>
               <h3 className="text-lg font-bold mb-2">{feed.username}</h3>
               <div className="mb-4">{renderStars(feed.rating)}</div>
