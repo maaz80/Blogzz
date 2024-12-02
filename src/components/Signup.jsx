@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import authService from '../appwrite/auth.js'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../store/authSlice'
@@ -25,7 +25,9 @@ function Signup() {
             setError(error.message)
         }
     }
-
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
     return (
         <div className="flex items-center justify-center h-screen -mt-16">
             <div className={`mx-auto w-full max-w-md bg-white backdrop-blur-lg rounded-xl p-3 md:p-10 border border-gray-200 shadow-xl`}>
@@ -50,8 +52,8 @@ function Signup() {
                             placeholder="Enter your full name"
                             {...register("name", {
                                 required: true,
-                                minLength:10,
-                                maxLength:15
+                                minLength: 10,
+                                maxLength: 15
                             })}
                         />
                         <Input
@@ -72,7 +74,7 @@ function Signup() {
                             placeholder="Enter your password"
                             {...register("password", {
                                 required: true,
-                                minLength:6
+                                minLength: 6
                             })}
                         />
                         <Button
