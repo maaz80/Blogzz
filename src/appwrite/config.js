@@ -24,7 +24,7 @@ export class Service {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackCollectionId,
+                conf.appwriteFeedbackId,
                 ID.unique(),
                 {
                     username,
@@ -37,26 +37,24 @@ export class Service {
         }
     }
 
-    async getFeedbacks() {
+    async getFeedbacks(queries=[]) {
         try {
-            const response = await this.databases.listDocuments(
+            return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackCollectionId
-            );
-    
-            return response.documents; 
+                conf.appwriteFeedbackId,
+                queries
+            )
         } catch (error) {
-            console.log('Error getting feedback: ', error);
-            return []; 
+            console.log('Error getting feedback' + error);
+
         }
     }
-    
 
     async GetFeedback(slug) {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackCollectionId,
+                conf.appwriteFeedbackId,
                 slug
             )
         } catch (error) {
@@ -69,7 +67,7 @@ export class Service {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackCollectionId,
+                conf.appwriteFeedbackId,
                 slug,
                 {
                     feedback,
@@ -86,7 +84,7 @@ export class Service {
         try {
             await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackCollectionId,
+                conf.appwriteFeedbackId,
                 slug
             )
             return true;
