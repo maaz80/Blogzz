@@ -21,17 +21,7 @@ function Feedback() {
   const [isAuthor, setIsAuthor] = useState(false)
   const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm();
 
-  // Fetch feedback list
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    appwriteService.getFeedbacks().then((feedback) => {
-      if (feedback) {
-        setFeedbacks(feedback.documents);
-        console.log(feedback.documents);
-        
-      }
-    });
-  }, []);
+ 
 
   // Getting user data 
   const getUser = () => {
@@ -122,6 +112,19 @@ function Feedback() {
     }
   }, [feedbacks, userData]);
 
+
+   // Fetch feedback list
+   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    appwriteService.getFeedbacks().then((feedback) => {
+      if (feedback) {
+        setFeedbacks(feedback.documents);
+        console.log(feedback.documents);
+        
+      }
+    });
+  }, []);
+  
   // Delete feedback function
   const deleteFeedback = async (feedbackId) => {
     try {

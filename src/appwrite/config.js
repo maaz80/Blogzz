@@ -39,9 +39,12 @@ export class Service {
 
     async getFeedbacks(queries=[]) {
         try {
+            console.log('API Request: Listing Posts');
+            console.log('Endpoint:', `${conf.appwriteUrl}/v1/databases/${conf.appwriteDatabaseId}/collections/${conf.appwriteFeedbackId}/documents`);
+            console.log('Queries:', queries);
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackId,
+                '674c4533002e7d687b96',
                 queries
             )
         } catch (error) {
@@ -193,6 +196,9 @@ export class Service {
 
     async GetPosts(queries = [Query.equal('status', 'active')]) {
         try {
+            console.log('API Request: Listing Posts');
+            console.log('Endpoint:', `${conf.appwriteUrl}/v1/databases/${conf.appwriteDatabaseId}/collections/${conf.appwriteCollectionId}/documents`);
+            console.log('Queries:', queries);
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
