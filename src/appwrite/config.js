@@ -39,15 +39,18 @@ export class Service {
 
     async getFeedbacks() {
         try {
-            return await this.databases.listDocuments(
+            const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteFeedbackCollectionId,
-            )
+                conf.appwriteFeedbackCollectionId
+            );
+    
+            return response.documents; 
         } catch (error) {
-            console.log('Error getting feedback' + error);
-
+            console.log('Error getting feedback: ', error);
+            return []; 
         }
     }
+    
 
     async GetFeedback(slug) {
         try {
