@@ -37,11 +37,12 @@ export class Service {
         }
     }
 
-    async getFeedbacks(queries=[]) {
+    async getFeedbacks(queries = []) {
         try {
+            console.log(import.meta.env.VITE_APPWRITE_FEEDBACK_ID)
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                import.meta.env.VITE_APPWRITE_FEEDBACKCOLLECTION_ID,
+                String(import.meta.env.VITE_APPWRITE_FEEDBACK_ID),
                 queries
             )
         } catch (error) {
@@ -63,7 +64,7 @@ export class Service {
         }
     }
 
-    async UpdateFeedback(slug,{feedback, rating}) {
+    async UpdateFeedback(slug, { feedback, rating }) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
