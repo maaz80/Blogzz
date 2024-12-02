@@ -67,7 +67,7 @@ if (daysDifference === 0) {
   return (
     <div className='w-[300px] md:w-[305px] m-auto md:m-0  rounded-xl p-2 h-80 shadow-md shadow-gray-400 ' onClick={handlePostOpen}>
       <div className='w-[280px] md:w-[285px] mx-auto justify-center mb-4 overflow-hidden rounded-xl hover:shadow-sm hover:shadow-gray-400'>
-        <img src={appwriteService.getFilePreview(featuredimage)} alt={title} className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale ' />
+        <img src={appwriteService.getFilePreview(featuredimage)} loading='lazy' alt={title} className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale ' />
       </div>
       <div className='flex justify-between items-center'>
         <h2 className='text-rose-700'>{UserName}</h2>

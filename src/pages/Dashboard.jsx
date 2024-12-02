@@ -209,6 +209,7 @@ const Dashboard = () => {
                                             src={appwriteService.getFilePreview(post.featuredimage) || 'https://via.placeholder.com/50'}
                                             alt={post.title}
                                             className="w-12 h-12 rounded-md object-cover"
+                                            loading='lazy'
                                         />
                                         {/* Post Details */}
                                         <div className='mt-1'>

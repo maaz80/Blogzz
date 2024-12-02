@@ -220,7 +220,7 @@ function Feedback() {
                       .split(" ")
                       .map((word) => word[0]?.toUpperCase() || "")
                       .join("")
-                    : "NA" // Default value if username is undefined or null
+                    : "NA" 
                 }
 
               </div>

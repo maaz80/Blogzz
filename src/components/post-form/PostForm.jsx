@@ -177,6 +177,7 @@ export default function PostForm({ post }) {
                             src={appwriteService.getFilePreview(post.featuredimage)}
                             alt={post.title}
                             className="rounded-lg"
+                            loading="lazy"
                         />
                     </div>
                 )}
