@@ -28,6 +28,7 @@ const Dashboard = () => {
     const [feedbacks, setFeedbacks] = useState([])
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         appwriteService.GetPosts().then((allposts) => {
             if (allposts) {
 

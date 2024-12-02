@@ -7,6 +7,7 @@ function Home() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         appwriteService.GetPosts().then((posts) => {
             if (posts) {
                 const sortedPosts = posts.documents.sort((a, b) => {

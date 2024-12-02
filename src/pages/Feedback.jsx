@@ -23,6 +23,7 @@ function Feedback() {
 
   // Fetch feedback list
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     appwriteService.getFeedbacks().then((feedback) => {
       if (feedback) {
         setFeedbacks(feedback.documents);

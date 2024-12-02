@@ -26,6 +26,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         appwriteService.GetPosts().then((allposts) => {
             if (allposts) {
                 // Reversing post for showing recent posts 

@@ -53,7 +53,7 @@ export class Service {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteFeedbackCollectionId,
                 slug
             )
         } catch (error) {
