@@ -47,14 +47,14 @@ export default function PostForm({ post }) {
         } else {
             data.userid = userData?.$id || data.userid;
         }
-    
+
         const defaultImageUrl = "https://www.eadion.com/templates/yootheme/cache/1e/CELEBRATING-1e3f94e3.jpeg";
-        
+
         // Check if image is provided by user
-        const file = data.image && data.image[0] 
-            ? await appwriteService.uploadFile(data.image[0]) 
+        const file = data.image && data.image[0]
+            ? await appwriteService.uploadFile(data.image[0])
             : null;
-    
+
         if (post) {
             if (!file) {
                 // Use default image if no new image is provided
@@ -66,12 +66,12 @@ export default function PostForm({ post }) {
                 }
                 data.featuredimage = file.$id;
             }
-    
+
             const dbPost = await appwriteService.UpdatePost(post.$id, {
                 ...data,
                 featuredimage: data.featuredimage,
             });
-    
+
             if (dbPost) {
                 navigate(`/post/${dbPost.$id}`);
             }
@@ -82,7 +82,7 @@ export default function PostForm({ post }) {
             } else {
                 data.featuredimage = file.$id;
             }
-    
+
             const dbPost = await appwriteService.CreatePost({ ...data, userid: data.userid });
             setIsPopup(true);
             setTimeout(() => {
@@ -92,7 +92,7 @@ export default function PostForm({ post }) {
                 }
             }, 1000);
         }
-    };    
+    };
 
     const slugTransform = useCallback((value) => {
         if (value && typeof value === "string")
@@ -129,7 +129,7 @@ export default function PostForm({ post }) {
                         validate: (value) =>
                             /^[a-zA-Z\s]+$/.test(value) || "Title must only contain letters and spaces",
                     })}
-                    
+
                 />
                 {errors.title && (
                     <p className="text-red-500 text-sm">{errors.title.message}</p>
@@ -164,7 +164,8 @@ export default function PostForm({ post }) {
                     label="Featured Image :"
                     type="file"
                     className="mb-4"
-                    accept="image/png, image/jpg, image/jpeg, image/gif"
+                    accept="image/png, image/jpg, image/jpeg, image/gif, image/heic, image/heif"
+                    capture="environment"
                     {...register("image", { required: !post && "Featured image is required" })}
                 />
                 {errors.image && (

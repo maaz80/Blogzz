@@ -1,31 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import appwriteService from "../appwrite/config"
-import { Link, useNavigate } from 'react-router-dom'
-import authService from '../appwrite/auth'
-import { FaHeart } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react';
+import appwriteService from '../appwrite/config';
+import { useNavigate } from 'react-router-dom';
+import { FaHeart } from 'react-icons/fa';
+import authService from '../appwrite/auth';
 
 function PostCard({ $id, title, featuredimage, $createdAt, UserName, likes }) {
-  const [userEmail, setuserEmail] = useState('')
-  const [isLiked, setIsLiked] = useState(false)
-  const [createdDays, setCreatedDays] = useState('Today')
-  const navigate = useNavigate()
-  const [likesCount, setLikesCount] = useState(likes.length )
+  const [userEmail, setuserEmail] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
+  const [createdDays, setCreatedDays] = useState('Today');
+  const [likesCount, setLikesCount] = useState(likes.length);
+  const navigate = useNavigate();
 
-useEffect(() => {
-const createdDate = new Date($createdAt);
-const currentDate = new Date();
-const timeDifference = currentDate - createdDate;
-const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-if (daysDifference === 0) {
-  setCreatedDays('Today');
-} else if (daysDifference === 1) {
-  setCreatedDays('Yesterday');
-} else {
-  setCreatedDays(`${daysDifference} days ago`);
-}
-},[createdDays])
+  // Detect if the user is on iOS
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // Geting current user 
+  useEffect(() => {
+    const createdDate = new Date($createdAt);
+    const currentDate = new Date();
+    const timeDifference = currentDate - createdDate;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    if (daysDifference === 0) {
+      setCreatedDays('Today');
+    } else if (daysDifference === 1) {
+      setCreatedDays('Yesterday');
+    } else {
+      setCreatedDays(`${daysDifference} days ago`);
+    }
+  }, [$createdAt]);
+
+  // Get current user
   useEffect(() => {
     authService.getCurrentUser().then((userData) => {
       if (userData) {
@@ -34,54 +37,67 @@ if (daysDifference === 0) {
     });
   }, []);
 
-  // Set Like or dislike 
+  // Set like or dislike
   useEffect(() => {
     if (userEmail) {
       setIsLiked(likes.includes(userEmail));
     }
   }, [userEmail, likes]);
 
-  // Hndle Likes or dislike 
+  // Handle likes or dislikes
   const handleLike = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     if (!userEmail) return;
 
-    const updatedLikes = isLiked ? likes.filter(email => email !== userEmail) : [...likes, userEmail];
-    const updatedLikesCount = isLiked ? likesCount - 1 : likesCount + 1
-    appwriteService.updatePostLikes($id, updatedLikes)
+    const updatedLikes = isLiked
+      ? likes.filter((email) => email !== userEmail)
+      : [...likes, userEmail];
+    const updatedLikesCount = isLiked ? likesCount - 1 : likesCount + 1;
+    appwriteService
+      .updatePostLikes($id, updatedLikes)
       .then(() => {
         setIsLiked(!isLiked);
       })
-      .catch(err => {
-        console.log("Error updating likes:", err);
+      .catch((err) => {
+        console.log('Error updating likes:', err);
       });
-    setLikesCount(updatedLikesCount)
-  }
+    setLikesCount(updatedLikesCount);
+  };
 
-  // Handle Post details 
+  // Handle post details
   const handlePostOpen = (e) => {
-    e.stopPropagation()
-    navigate(`/post/${$id}`)
-  }
+    e.stopPropagation();
+    navigate(`/post/${$id}`);
+  };
 
   return (
-    <div className='w-[300px] md:w-[305px] m-auto md:m-0  rounded-xl p-2 h-80 shadow-md shadow-gray-400 ' onClick={handlePostOpen}>
+    <div
+      className='w-[300px] md:w-[305px] m-auto md:m-0 rounded-xl p-2 h-80 shadow-md shadow-gray-400'
+      onClick={handlePostOpen}
+    >
       <div className='w-[280px] md:w-[285px] mx-auto justify-center mb-4 overflow-hidden rounded-xl hover:shadow-sm hover:shadow-gray-400'>
-        <img src={appwriteService.getFilePreview(featuredimage)} loading='lazy' alt={title} className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale ' />
+        <img
+          src={appwriteService.getFilePreview(featuredimage, {
+            format: isIOS ? 'heic' : 'jpeg',
+          })}
+          loading='lazy'
+          alt={title}
+          className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale'
+        />
       </div>
       <div className='flex justify-between items-center'>
         <h2 className='text-rose-700'>{UserName}</h2>
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           <p>{likesCount} Likes</p>
-          <button onClick={handleLike} className="text-red-600">
-            <FaHeart color={isLiked ? "red" : "gray"} size={20} />
+          <button onClick={handleLike} className='text-red-600'>
+            <FaHeart color={isLiked ? 'red' : 'gray'} size={20} />
           </button>
         </div>
       </div>
       <h2 className='text-xl font-bold text-rose-600'>{title}</h2>
       <p className='text-rose-600 text-sm'>{createdDays}</p>
     </div>
-  )
+  );
 }
 
 export default PostCard;
