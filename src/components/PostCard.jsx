@@ -11,8 +11,6 @@ function PostCard({ $id, title, featuredimage, $createdAt, UserName, likes }) {
   const [likesCount, setLikesCount] = useState(likes.length);
   const navigate = useNavigate();
 
-  // Detect if the user is on iOS
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   useEffect(() => {
     const createdDate = new Date($createdAt);
@@ -76,14 +74,7 @@ function PostCard({ $id, title, featuredimage, $createdAt, UserName, likes }) {
       onClick={handlePostOpen}
     >
       <div className='w-[280px] md:w-[285px] mx-auto justify-center mb-4 overflow-hidden rounded-xl hover:shadow-sm hover:shadow-gray-400'>
-        <img
-          src={appwriteService.getFilePreview(featuredimage, {
-            format: isIOS ? 'heic' : 'jpeg',
-          })}
-          loading='lazy'
-          alt={title}
-          className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale'
-        />
+      <img src={appwriteService.getFilePreview(featuredimage)} loading='lazy' alt={title} className='rounded-xl h-52 w-[100%] object-cover hover:scale-105 duration-500 transition-scale ' />
       </div>
       <div className='flex justify-between items-center'>
         <h2 className='text-rose-700'>{UserName}</h2>

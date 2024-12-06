@@ -164,8 +164,7 @@ export default function PostForm({ post }) {
                     label="Featured Image :"
                     type="file"
                     className="mb-4"
-                    accept="image/png, image/jpg, image/jpeg, image/gif, image/heic, image/heif"
-                    capture="environment"
+                    accept="image/png, image/jpg, image/jpeg"
                     {...register("image", { required: !post && "Featured image is required" })}
                 />
                 {errors.image && (
